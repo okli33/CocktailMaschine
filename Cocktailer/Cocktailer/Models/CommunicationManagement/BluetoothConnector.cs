@@ -1,8 +1,5 @@
 ﻿using Android.Bluetooth;
 using Android.Content;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Cocktailer.Models.CommunicationManagement
 {
@@ -10,10 +7,25 @@ namespace Cocktailer.Models.CommunicationManagement
     {
         BluetoothAdapter bluetoothAdapter;
         BluetoothConnectionManager manager;
-
+        public BluetoothConnector(BluetoothConnectionManager man, BluetoothAdapter adapter)
+        {
+            manager = man;
+            if (adapter == null)
+            {
+                bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
+            }
+            else
+            {
+                bluetoothAdapter = adapter;
+            }
+        }
         void ConnectDevice(Intent data, bool secure)
         {
-            var address = data.Extras.GetString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+            var address = new ConnectDeviceService().DEVICE_ADDRESS;
+            if (address == "NOT_FOUND")
+            {
+                throw new BluetoothNotCoupledException("Could not find CocktailMachine");
+            }
             var device = bluetoothAdapter.GetRemoteDevice(address);
             manager.Connect(device, secure);
         }

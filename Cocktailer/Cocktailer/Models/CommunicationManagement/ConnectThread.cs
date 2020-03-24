@@ -57,7 +57,7 @@ namespace Cocktailer.Models.CommunicationManagement
                 // successful connection or an exception
                 socket.Connect();
             }
-            catch (Java.IO.IOException e)
+            catch (Java.IO.IOException)
             {
                 // Close the socket
                 try

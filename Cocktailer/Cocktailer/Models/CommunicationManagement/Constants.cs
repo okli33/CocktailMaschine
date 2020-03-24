@@ -12,7 +12,7 @@ namespace Cocktailer.Models.CommunicationManagement
         public const int MESSAGE_DEVICE_NAME = 4;
         public const int MESSAGE_TOAST = 5;
 
-        public const string DEVICE_NAME = "device_name";
+        public const string DEVICE_NAME = "SAMSUNG-CocktailCell";
         public const string TOAST = "toast";
     }
 }
