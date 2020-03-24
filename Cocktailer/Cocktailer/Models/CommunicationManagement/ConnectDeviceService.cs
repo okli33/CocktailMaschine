@@ -7,7 +7,7 @@ namespace Cocktailer.Models.CommunicationManagement
 {
     public class ConnectDeviceService : Activity
     {
-        string arduinoName = "";
+        string arduinoName = "DSD TECH HC-05";
 
         BluetoothAdapter btAdapter;
         public static List<string> newDevices;
