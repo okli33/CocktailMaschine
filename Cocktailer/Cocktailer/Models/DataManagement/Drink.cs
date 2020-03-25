@@ -1,7 +1,4 @@
-﻿using Cocktailer.Models.ConfigurationManagement;
-using Cocktailer.Models.MemoryManagement;
-
-namespace Cocktailer.Models.DataManagement
+﻿namespace Cocktailer.Models.DataManagement
 {
     public class Drink : IAmSaveable
     {

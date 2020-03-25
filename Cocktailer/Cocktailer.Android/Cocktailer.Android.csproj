@@ -57,6 +57,14 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CommunicationManagement\AcceptThread.cs" />
+    <Compile Include="Core\CommunicationManagement\BluetoothConnectionManager.cs" />
+    <Compile Include="Core\CommunicationManagement\BluetoothConnector.cs" />
+    <Compile Include="Core\CommunicationManagement\BluetoothNotCoupledException.cs" />
+    <Compile Include="Core\CommunicationManagement\ConnectDeviceService.cs" />
+    <Compile Include="Core\CommunicationManagement\ConnectedThread.cs" />
+    <Compile Include="Core\CommunicationManagement\ConnectThread.cs" />
+    <Compile Include="Core\CommunicationManagement\Constants.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

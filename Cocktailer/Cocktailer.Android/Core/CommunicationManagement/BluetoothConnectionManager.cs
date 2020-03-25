@@ -3,7 +3,7 @@ using Android.OS;
 using Java.Util;
 using System.Runtime.CompilerServices;
 
-namespace Cocktailer.Models.CommunicationManagement
+namespace Cocktailer.Droid.Core.CommunicationManagement
 {
     public class BluetoothConnectionManager
     {

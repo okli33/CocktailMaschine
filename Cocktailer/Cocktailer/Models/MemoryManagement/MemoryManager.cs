@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Cocktailer.Models.MemoryManagement
-{
+namespace Cocktailer.Models.MemoryManagement { 
     public class MemoryManager<T> where T : IAmSaveable
     {
         string AppPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

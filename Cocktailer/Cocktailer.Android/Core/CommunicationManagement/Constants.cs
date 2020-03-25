@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cocktailer.Models.CommunicationManagement
+namespace Cocktailer.Droid.Core.CommunicationManagement
 {
     public static class Constants
     {

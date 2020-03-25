@@ -3,7 +3,7 @@ using Android.Util;
 using Java.Lang;
 using System.IO;
 
-namespace Cocktailer.Models.CommunicationManagement
+namespace Cocktailer.Droid.Core.CommunicationManagement
 {
     public class ConnectedThread : Thread
     {

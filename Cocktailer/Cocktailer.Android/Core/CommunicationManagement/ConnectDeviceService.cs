@@ -3,7 +3,7 @@ using Android.Bluetooth;
 using Android.Content;
 using System.Collections.Generic;
 
-namespace Cocktailer.Models.CommunicationManagement
+namespace Cocktailer.Droid.Core.CommunicationManagement
 {
     public class ConnectDeviceService : Activity
     {

@@ -1,7 +1,7 @@
 ﻿using Android.Bluetooth;
 using Android.Content;
 
-namespace Cocktailer.Models.CommunicationManagement
+namespace Cocktailer.Droid.Core.CommunicationManagement
 {
     public class BluetoothConnector
     {
