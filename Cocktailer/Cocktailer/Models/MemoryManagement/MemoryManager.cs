@@ -8,8 +8,8 @@ using System.IO;
 namespace Cocktailer.Models.MemoryManagement { 
     public class MemoryManager<T> where T : IAmSaveable
     {
-        string AppPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, "CocktailMachine");
-        string subFolder;
+        readonly string AppPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, "CocktailMachine");
+        readonly string subFolder;
 
         public MemoryManager()
         {

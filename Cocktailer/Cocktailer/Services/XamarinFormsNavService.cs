@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(XamarinFormsNavService))]
+
 namespace Cocktailer.Services
 {
     public class XamarinFormsNavService : INavService
@@ -85,6 +85,9 @@ namespace Cocktailer.Services
             var constructor = viewType.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
                 dc => !dc.GetParameters().Any());
             var view = constructor.Invoke(null) as Page;
+
+            var vm = ((App)Application.Current).Kernel.GetService(viewModelType);
+            view.BindingContext = vm;
 
             await XamarinFormsNav.PushAsync(view, true);
         }

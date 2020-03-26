@@ -15,7 +15,6 @@ namespace Cocktailer.Views
         public DrinkDetailPage()
         {
             InitializeComponent();
-            BindingContext = new DrinkDetailViewModel(DependencyService.Get<INavService>());
         }
 
         protected override void OnAppearing()

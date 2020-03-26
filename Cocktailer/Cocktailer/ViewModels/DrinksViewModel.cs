@@ -1,10 +1,6 @@
 ﻿using Cocktailer.Models.Entries;
-using Cocktailer.Models.MemoryManagement;
 using Cocktailer.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Cocktailer.ViewModels

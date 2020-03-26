@@ -1,27 +1,36 @@
-﻿using Cocktailer.Services;
+﻿using Cocktailer.Modules;
+using Cocktailer.Services;
 using Cocktailer.ViewModels;
 using Cocktailer.Views;
+using Ninject;
+using Ninject.Modules;
 using Xamarin.Forms;
 
 namespace Cocktailer
 {
     public partial class App : Application
     {
-
-        public App()
+        public IKernel Kernel { get; set; }
+        public App(params INinjectModule[] platformModules)
         {
             InitializeComponent();
-            var mainPage = new NavigationPage(new MainPage());
-            var navService = DependencyService.Get<INavService>() as XamarinFormsNavService;
+            Kernel = new StandardKernel();
+            Kernel.Load(new CocktailerCoreModule());
+            Kernel.Load(new CocktailerNavModule());
+            Kernel.Load(platformModules);
+            SetMainPage();
+        }
 
+        void SetMainPage()
+        {
+            var mainPage = new NavigationPage(new MainPage())
+            {
+                BindingContext = Kernel.Get<MainViewModel>()
+            };
+            var navService = Kernel.Get<INavService>() as XamarinFormsNavService;
             navService.XamarinFormsNav = mainPage.Navigation;
-            navService.RegisterViewMapping(typeof(MainViewModel), typeof(MainPage));
-            navService.RegisterViewMapping(typeof(DrinksViewModel), typeof(DrinksPage));
-            navService.RegisterViewMapping(typeof(DrinkDetailViewModel), typeof(DrinkDetailPage));
-            navService.RegisterViewMapping(typeof(NewDrinkViewModel), typeof(NewDrinkPage));
 
             MainPage = mainPage;
-
         }
 
         protected override void OnStart()

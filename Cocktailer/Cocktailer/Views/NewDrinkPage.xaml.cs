@@ -18,7 +18,6 @@ namespace Cocktailer.Views
         {
             InitializeComponent();
             BindingContextChanged += Page_BindingContextChanged;
-            BindingContext = new NewDrinkViewModel(DependencyService.Get<INavService>());
         }
 
         void Page_BindingContextChanged(object sender, EventArgs e)

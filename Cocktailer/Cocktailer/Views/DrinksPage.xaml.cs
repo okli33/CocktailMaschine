@@ -15,7 +15,6 @@ namespace Cocktailer.Views
         public DrinksPage()
         {
             InitializeComponent();
-            BindingContext = new DrinksViewModel(DependencyService.Get<INavService>());
         }      
     }
 }
