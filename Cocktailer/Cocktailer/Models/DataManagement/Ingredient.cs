@@ -1,21 +1,23 @@
-﻿namespace Cocktailer.Models.DataManagement
+﻿using Cocktailer.Models.Entries;
+
+namespace Cocktailer.Models.DataManagement
 {
     public class Ingredient : IAmSaveable
     {
         public int Amount;
-        public Drink Drink;
+        public DrinkEntry Drink;
 
         public Ingredient(string name, int amount)
         {
             Amount = amount;
-            Drink = new Drink(name);
+            Drink = new DrinkEntry { Name = name };
         }
         public Ingredient(string name, int amount, string brand)
         {
-            Drink = new Drink(name, brand);           
+            Drink = new DrinkEntry { Name = name, Brand = brand };           
             amount = Amount;
         }
-        public Ingredient (Drink drink, int amount)
+        public Ingredient (DrinkEntry drink, int amount)
         {
             Amount = amount;
             Drink = drink;

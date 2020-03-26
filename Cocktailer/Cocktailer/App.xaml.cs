@@ -1,8 +1,7 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using Cocktailer.Services;
+﻿using Cocktailer.Services;
+using Cocktailer.ViewModels;
 using Cocktailer.Views;
+using Xamarin.Forms;
 
 namespace Cocktailer
 {
@@ -12,9 +11,17 @@ namespace Cocktailer
         public App()
         {
             InitializeComponent();
+            var mainPage = new NavigationPage(new MainPage());
+            var navService = DependencyService.Get<INavService>() as XamarinFormsNavService;
 
-            DependencyService.Register<MockDataStore>();
-            MainPage = new MainPage();
+            navService.XamarinFormsNav = mainPage.Navigation;
+            navService.RegisterViewMapping(typeof(MainViewModel), typeof(MainPage));
+            navService.RegisterViewMapping(typeof(DrinksViewModel), typeof(DrinksPage));
+            navService.RegisterViewMapping(typeof(DrinkDetailViewModel), typeof(DrinkDetailPage));
+            navService.RegisterViewMapping(typeof(NewDrinkViewModel), typeof(NewDrinkPage));
+
+            MainPage = mainPage;
+
         }
 
         protected override void OnStart()

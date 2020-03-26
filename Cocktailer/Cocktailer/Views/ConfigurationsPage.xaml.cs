@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace Cocktailer.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class About : ContentPage
+    public partial class ConfigurationsPage : ContentPage
     {
-        public About()
+        public ConfigurationsPage()
         {
             InitializeComponent();
         }

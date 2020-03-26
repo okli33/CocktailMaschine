@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.DrinkDetailPage"
+             Title="Getränk">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Bearbeiten" Command="{Binding EditCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Text="Marke"/>
+            <Label x:Name="brand" Grid.Column="1" Grid.Row="0" Text="{Binding Entry.Brand}" FontAttributes="Bold"/>
+            <Label Grid.Column="0" Grid.Row="1" Text="Getränk" />
+            <Label x:Name="name" Grid.Column="1" Grid.Row="1" Text="{Binding Entry.Name}" FontAttributes="Bold"/>
+            <Label Grid.Column="0" Grid.Row="2" Text="Alkoholgehalt"/>
+            <Label x:Name="percentage" Grid.Column="1" Grid.Row="2" Text="{Binding Entry.Percentage, StringFormat='{0}%'}" FontAttributes="Bold"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

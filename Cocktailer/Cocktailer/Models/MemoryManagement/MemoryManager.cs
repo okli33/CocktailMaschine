@@ -1,4 +1,5 @@
 ﻿using Cocktailer.Models.DataManagement;
+using Cocktailer.Models.Entries;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.IO;
 namespace Cocktailer.Models.MemoryManagement { 
     public class MemoryManager<T> where T : IAmSaveable
     {
-        string AppPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string AppPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, "CocktailMachine");
         string subFolder;
 
         public MemoryManager()
@@ -16,7 +17,7 @@ namespace Cocktailer.Models.MemoryManagement {
             {
                 subFolder = "Configurations";
             }
-            else if (typeof(T).Equals(typeof(Drink)))
+            else if (typeof(T).Equals(typeof(DrinkEntry)))
             {
                 subFolder = "Drinks";
             }
@@ -28,6 +29,11 @@ namespace Cocktailer.Models.MemoryManagement {
             {
                 subFolder = "Recipes";
             }
+            if(!Directory.Exists(Path.Combine(AppPath, subFolder)))
+            {
+                //Directory.CreateDirectory(Path.Combine(AppPath, subFolder));
+            }
+            
         }
         public void Save(T obj, string name)
         {
