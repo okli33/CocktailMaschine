@@ -1,22 +1,19 @@
-﻿using Cocktailer.Models.Entries;
-using Cocktailer.Services;
-using Cocktailer.ViewModels;
-using System;
+﻿using Cocktailer.ViewModels;
 using System.ComponentModel;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Cocktailer.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DrinkDetailPage : ContentPage
+    public partial class DrinksPage : ContentPage
     {
-        DrinkDetailViewModel ViewModel => BindingContext as DrinkDetailViewModel;
-        public DrinkDetailPage()
+        DrinksViewModel ViewModel => BindingContext as DrinksViewModel;
+        public DrinksPage()
         {
             InitializeComponent();
         }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -30,7 +27,7 @@ namespace Cocktailer.Views
             if (ViewModel != null)
                 ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
         }
-        
+
         protected void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(DrinkDetailViewModel.Entry))

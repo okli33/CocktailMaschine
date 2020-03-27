@@ -41,4 +41,17 @@ namespace Cocktailer.ViewModels
             return new List<string>();
         }
     }
+
+    public class BaseValidationViewModel<TParameter> : BaseValidationViewModel
+    {
+        protected BaseValidationViewModel(INavService navService) : base(navService)
+        {
+
+        }
+        public override void Init()
+        {
+            Init(default(TParameter));
+        }
+        public virtual void Init(TParameter parameter) { }
+    }
 }

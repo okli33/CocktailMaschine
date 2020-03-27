@@ -17,6 +17,7 @@ namespace Cocktailer
             Kernel = new StandardKernel();
             Kernel.Load(new CocktailerCoreModule());
             Kernel.Load(new CocktailerNavModule());
+            Kernel.Load(new CocktailerMemoryModule());
             Kernel.Load(platformModules);
             SetMainPage();
         }
@@ -29,7 +30,7 @@ namespace Cocktailer
             };
             var navService = Kernel.Get<INavService>() as XamarinFormsNavService;
             navService.XamarinFormsNav = mainPage.Navigation;
-
+            var memService = Kernel.Get<IMemoryService>() as MemoryService;
             MainPage = mainPage;
         }
 

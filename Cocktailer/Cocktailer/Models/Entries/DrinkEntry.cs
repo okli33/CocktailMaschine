@@ -2,7 +2,7 @@
 
 namespace Cocktailer.Models.Entries
 {
-    public class DrinkEntry : IAmSaveable
+    public class DrinkEntry : IEntry
     {
         public string Brand { get; set; }
         public string Name { get; set; }

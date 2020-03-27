@@ -14,6 +14,8 @@ namespace Cocktailer.Modules
             navService.RegisterViewMapping(typeof(DrinksViewModel), typeof(DrinksPage));
             navService.RegisterViewMapping(typeof(DrinkDetailViewModel), typeof(DrinkDetailPage));
             navService.RegisterViewMapping(typeof(NewDrinkViewModel), typeof(NewDrinkPage));
+            navService.RegisterViewMapping(typeof(CocktailModeViewModel), typeof(CocktailmodePage));
+            navService.RegisterViewMapping(typeof(EditDrinkViewModel), typeof(EditDrinkPage));
 
             Bind<INavService>().ToMethod(x => navService).InSingletonScope();
         }

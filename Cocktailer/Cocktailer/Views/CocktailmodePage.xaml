@@ -7,7 +7,7 @@
              x:Class="Cocktailer.Views.CocktailmodePage"
              Title="Cocktails">
     <ContentPage.Content>
-        <CollectionView x:Name="cocktails" SelectionMode="Single">
+        <CollectionView SelectionMode="Single" ItemsSource="{Binding RecipeEntries}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Grid Padding="10">

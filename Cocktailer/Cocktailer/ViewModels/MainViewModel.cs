@@ -8,7 +8,7 @@ namespace Cocktailer.ViewModels
         public MainViewModel(INavService navService) : base(navService) { }
 
         public Command SuffCommand => new Command(async () => await NavService
-            .NavigateTo<DrinksViewModel>());
+            .NavigateTo<CocktailModeViewModel>());
         public Command RecipesCommand => new Command(async () => await NavService
             .NavigateTo<DrinksViewModel>());
         public Command ConfigurationsCommand => new Command(async () => await NavService

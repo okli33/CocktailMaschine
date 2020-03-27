@@ -3,32 +3,34 @@ using Cocktailer.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Cocktailer.ViewModels
 {
     public class DrinkDetailViewModel : BaseViewModel<DrinkEntry>
     {
-        private DrinkEntry entry;
+        private DrinkEntry _entry;
         public DrinkEntry Entry
         {
-            get => entry;
+            get => _entry;
             set
             {
-                entry = value;
+                _entry = value;
                 OnPropertyChanged();
             }
         }
-        public DrinkDetailViewModel(INavService navService) : base(navService)
+        IMemoryService MemoryService;
+        public DrinkDetailViewModel(INavService navService, IMemoryService memService) : base(navService)
         {
-            
+            MemoryService = memService;
         }
 
         public override void Init(DrinkEntry parameter)
         {
             Entry = parameter;
         }
-
-        //public Command EditCommand => new Command(async () => await NavService.NavigateTo<>)
+        public Command<DrinkEntry> EditCommand =>  new Command<DrinkEntry>(async entry =>
+            await NavService.NavigateTo<EditDrinkViewModel, DrinkEntry>(entry));
     }
 }

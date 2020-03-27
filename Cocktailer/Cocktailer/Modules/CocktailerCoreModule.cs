@@ -11,7 +11,7 @@ namespace Cocktailer.Modules
             Bind<DrinksViewModel>().ToSelf();
             Bind<NewDrinkViewModel>().ToSelf();
             Bind<DrinkDetailViewModel>().ToSelf();
-
+            Bind<CocktailModeViewModel>().ToSelf();
         }
         
 

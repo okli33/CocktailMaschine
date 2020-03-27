@@ -1,5 +1,4 @@
 ﻿using Cocktailer.Models.Entries;
-using Cocktailer.Models.MemoryManagement;
 using Cocktailer.Services;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -8,6 +7,7 @@ namespace Cocktailer.ViewModels
 {
     public class NewDrinkViewModel : BaseValidationViewModel
     {
+        IMemoryService MemoryService;
         string brand;
         public string Brand
         {
@@ -38,19 +38,23 @@ namespace Cocktailer.ViewModels
             set
             {
                 percentage = value;
-                Validate(() => !double.IsNaN(percentage), "Percentage has to be a number");
+                Validate(() => !double.IsNaN(percentage) && percentage >= 0
+                    && percentage <= 100, "Percentage has to be a number between 0 and 100");
                 OnPropertyChanged();
                 SaveDrink.ChangeCanExecute();
             }
         }
-        public NewDrinkViewModel(INavService navService) : base(navService) { }
+        public NewDrinkViewModel(INavService navService, IMemoryService memService) : base(navService)
+        {
+            MemoryService = memService;
+        }
         public override void Init()
         {
-            
+
         }
 
         Command saveDrink;
-        public Command SaveDrink => saveDrink ?? (saveDrink = new Command(async () => await 
+        public Command SaveDrink => saveDrink ?? (saveDrink = new Command(async () => await
             Save(), CanSave));
 
         async Task Save()
@@ -61,13 +65,19 @@ namespace Cocktailer.ViewModels
                 Name = Name,
                 Percentage = Percentage
             };
-            var memManager = new MemoryManager<DrinkEntry>();
-            if (Brand != null) { }
-                //memManager.Save(newItem, Brand + Name);
-            else { }
-            //memManager.Save(newItem, Name);
+
+            IsBusy = true;
+            try
+            {
+                await MemoryService.Save<DrinkEntry>(newItem, $"{Brand}-{Name}-{Percentage}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
             await NavService.GoBack();
         }
-        bool CanSave() => !string.IsNullOrWhiteSpace(Name) && !HasErrors;
+        bool CanSave() => !string.IsNullOrWhiteSpace(Name) && !double.IsNaN(Percentage) && Percentage >= 0 
+             && Percentage <= 100 && !HasErrors;
     }
 }

@@ -6,6 +6,17 @@ namespace Cocktailer.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        bool isBusy;
+        public bool IsBusy
+        {
+            get => isBusy;
+            set
+            {
+                isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
         protected INavService NavService { get; private set; }
         protected BaseViewModel(INavService navService) 
         {

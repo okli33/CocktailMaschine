@@ -7,6 +7,7 @@ namespace Cocktailer.Models.DataManagement
         public int Amount;
         public DrinkEntry Drink;
 
+        public Ingredient() { }
         public Ingredient(string name, int amount)
         {
             Amount = amount;

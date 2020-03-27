@@ -1,5 +1,4 @@
-﻿using Cocktailer.Services;
-using Cocktailer.ViewModels;
+﻿using Cocktailer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

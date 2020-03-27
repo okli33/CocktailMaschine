@@ -1,8 +1,6 @@
 ﻿using Cocktailer.Models.Entries;
-using Cocktailer.Services;
 using Cocktailer.ViewModels;
-using System;
-using System.Linq;
+using System.ComponentModel;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,11 +8,12 @@ using Xamarin.Forms.Xaml;
 namespace Cocktailer.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class DrinksPage : ContentPage
+    public partial class EditDrinkPage : ContentPage
     {
-        public DrinksPage()
+        EditDrinkViewModel ViewModel => BindingContext as EditDrinkViewModel;
+        public EditDrinkPage()
         {
             InitializeComponent();
-        }      
+        }
     }
 }
