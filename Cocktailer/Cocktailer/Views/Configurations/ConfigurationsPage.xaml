@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels.Configurations"
+             x:Class="Cocktailer.Views.Configurations.ConfigurationsPage"
+             Title="Konfigurationen">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Neu" Command="{Binding NewCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <RefreshView IsRefreshing="{Binding IsBusy, Mode=OneWay}" Command="{Binding RefreshCommand}">
+            <CollectionView ItemsSource="{Binding ConfigurationEntries}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding
+                                Source={RelativeSource AncestorType={x:Type vm:ConfigurationsViewModel}},
+                                Path=ViewCommand}"
+                                CommandParameter="{Binding}" />
+                            </Grid.GestureRecognizers>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" FontSize="Medium"/>
+                            <Label Grid.Row="1" Text="{Binding DrinkString}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

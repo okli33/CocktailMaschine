@@ -1,4 +1,5 @@
 ﻿using Cocktailer.Services;
+using Cocktailer.ViewModels.Configurations;
 using Xamarin.Forms;
 
 namespace Cocktailer.ViewModels
@@ -12,7 +13,7 @@ namespace Cocktailer.ViewModels
         public Command RecipesCommand => new Command(async () => await NavService
             .NavigateTo<DrinksViewModel>());
         public Command ConfigurationsCommand => new Command(async () => await NavService
-            .NavigateTo<DrinksViewModel>());
+            .NavigateTo<ConfigurationsViewModel>());
         public Command DrinksCommand => new Command(async () =>await NavService
             .NavigateTo<DrinksViewModel>());
     }

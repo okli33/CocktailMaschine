@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
+             x:Class="Cocktailer.Views.Configurations.NewConfigurationPage">
+    <ContentPage.Resources>
+        <converters:IntArrayStringConverter x:Key="PositionStringConverter"/>
+        <converters:IntToStringConverter x:Key="IntStringConverter"/>
+        <converters:DrinkStringConverter x:Key="DrinkStringConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Speichern" Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry Text="{Binding Name}" Placeholder="Name"/>
+            <CollectionView ItemsSource="{Binding SpotList}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="Position" Padding="15"/>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{Binding Position, Converter= 
+                            {StaticResource PositionStringConverter}}" Padding="15"/>
+                            <Picker ItemsSource="{Binding DrinkEntries}" 
+                                Grid.Row="0" Grid.Column="1" Title="Getränk" 
+                                SelectedItem="{Binding Drink, Converter={StaticResource DrinkStringConverter}}"/>
+                            <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"
+                               Grid.Column="1" Grid.Row="1" Keyboard="Numeric"  Placeholder="Menge in ml"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

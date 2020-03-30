@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Cocktailer.Views
+namespace Cocktailer.Views.Configurations
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ConfigurationsPage : ContentPage
+    public partial class EditConfigurationPage : ContentPage
     {
-        public ConfigurationsPage()
+        public EditConfigurationPage()
         {
             InitializeComponent();
         }

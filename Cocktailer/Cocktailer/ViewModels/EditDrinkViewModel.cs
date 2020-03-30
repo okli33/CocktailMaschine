@@ -51,18 +51,11 @@ namespace Cocktailer.ViewModels
         {
             var oldFileName = $"{originalEntry.Brand}-{originalEntry.Name}-{originalEntry.Percentage}";
             await MemoryService.Delete<DrinkEntry>(oldFileName);
-            var newItem = new DrinkEntry
-            {
-                Brand = Entry.Brand,
-                Name = Entry.Name,
-                Percentage = Entry.Percentage
-            };
-
             IsBusy = true;
             try
             {
-                await MemoryService.Save<DrinkEntry>
-                    (newItem, $"{Entry.Brand}-{Entry.Name}-{Entry.Percentage}");
+                await MemoryService.Save
+                    (Entry, $"{Entry.Brand}-{Entry.Name}-{Entry.Percentage}");
             }
             finally
             {
