@@ -52,7 +52,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Text="Konfiguration löschen" Command="{Binding Delete}"/>
+            <Button Text="Konfiguration löschen" Command="{Binding DeleteCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
