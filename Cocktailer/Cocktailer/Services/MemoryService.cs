@@ -11,8 +11,8 @@ namespace Cocktailer.Services
 {
     public class MemoryService : IMemoryService
     {
-        async Task<IFolder> appFolder() => await FileSystem.Current
-            .LocalStorage.CreateFolderAsync("CocktailMachine", CreationCollisionOption.OpenIfExists);
+        async Task<IFolder> appFolder() => await FileSystem.Current.LocalStorage
+            .CreateFolderAsync("CocktailMachine", CreationCollisionOption.OpenIfExists);
         async Task<IFolder> subFolder<T>() => await (await appFolder()).CreateFolderAsync(typeof(T).Name,
                 CreationCollisionOption.OpenIfExists);
         public async Task<List<T>> GetAvailable<T>() where T : IEntry

@@ -12,8 +12,6 @@ namespace Cocktailer.Models.ConfigurationManagement
         public DrinkEntry Drink { get; set; }
         public int Amount { get; set; }
 
-        public List<string> DrinkEntries { get; set; }
-
         public Spot(int x, int y, DrinkEntry drink)
         {
             X = x;

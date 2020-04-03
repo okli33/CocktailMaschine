@@ -4,8 +4,10 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels.Configurations;assembly=Cocktailer"
              xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
-             x:Class="Cocktailer.Views.Configurations.NewConfigurationPage">
+             x:Class="Cocktailer.Views.Configurations.NewConfigurationPage"
+             Title="Neue Konfiguration">
     <ContentPage.Resources>
         <converters:IntArrayStringConverter x:Key="PositionStringConverter"/>
         <converters:IntToStringConverter x:Key="IntStringConverter"/>
@@ -32,7 +34,7 @@
                             <Label Grid.Row="0" Grid.Column="0" Text="Position" Padding="15"/>
                             <Label Grid.Row="1" Grid.Column="0" Text="{Binding Position, Converter= 
                             {StaticResource PositionStringConverter}}" Padding="15"/>
-                            <Picker ItemsSource="{Binding DrinkEntries}" 
+                            <Picker ItemsSource="{x:Static vm:NewConfigurationViewModel.AvailableDrinks}" 
                                 Grid.Row="0" Grid.Column="1" Title="Getränk" 
                                 SelectedItem="{Binding Drink, Converter={StaticResource DrinkStringConverter}}"/>
                             <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"

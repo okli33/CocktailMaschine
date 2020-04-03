@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Cocktailer.Views
+namespace Cocktailer.Views.Recipes
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecipesPage : ContentPage
+    public partial class RecipeDetailPage : ContentPage
     {
-        public RecipesPage()
+        public RecipeDetailPage()
         {
             InitializeComponent();
         }

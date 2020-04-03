@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels.Recipes;assembly=Cocktailer"
+             xmlns:converters="clr-namespace:Cocktailer.Converters"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.Recipes.NewRecipePage"
+             Title="Neues Rezept">
+    <ContentPage.Resources>
+        <converters:IntToStringConverter x:Key="IntStringConverter"/>
+        <converters:DrinkStringConverter x:Key="DrinkStringConverter"/>
+        <converters:DoubleStringConverter x:Key="DoubleStringConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Speichern" Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry Placeholder="Name" Text="{Binding Name}" FontAttributes="Bold" FontSize="Large"/>
+            <CollectionView ItemsSource="{Binding Ingredients}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Picker ItemsSource="{x:Static vm:NewRecipeViewModel.AvailableDrinks}"
+                                    Title="Getränk wählen"
+                                    SelectedItem="{Binding Drink, Converter={StaticResource DrinkStringConverter}}"
+                                    Grid.Row="0"/>
+                            <Grid Grid.Row="1" Padding="10,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="Menge in ml:" VerticalOptions="Center" FontSize="Medium"/>
+                                <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"
+                                   Keyboard="Numeric" Grid.Column="1">
+                                </Entry>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Zutat hinzufügen" Command="{Binding AddIngredientCommand}" Padding="10"/>
+            <Button Text="Letzte Zutat löschen" Command="{Binding DeleteIngredientCommand}" Padding="10"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

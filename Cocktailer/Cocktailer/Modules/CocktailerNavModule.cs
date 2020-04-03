@@ -1,8 +1,10 @@
 ﻿using Cocktailer.Services;
 using Cocktailer.ViewModels;
 using Cocktailer.ViewModels.Configurations;
+using Cocktailer.ViewModels.Recipes;
 using Cocktailer.Views;
 using Cocktailer.Views.Configurations;
+using Cocktailer.Views.Recipes;
 using Ninject.Modules;
 
 namespace Cocktailer.Modules
@@ -22,6 +24,10 @@ namespace Cocktailer.Modules
             navService.RegisterViewMapping(typeof(ConfigurationDetailViewModel), typeof(ConfigurationDetailPage));
             navService.RegisterViewMapping(typeof(NewConfigurationViewModel), typeof(NewConfigurationPage));
             navService.RegisterViewMapping(typeof(EditConfigurationViewModel), typeof(EditConfigurationPage));
+            navService.RegisterViewMapping(typeof(RecipesViewModel), typeof(RecipesPage));
+            navService.RegisterViewMapping(typeof(NewRecipeViewModel), typeof(NewRecipePage));
+            navService.RegisterViewMapping(typeof(RecipeDetailViewModel), typeof(RecipeDetailPage));
+            navService.RegisterViewMapping(typeof(EditRecipeViewModel), typeof(EditRecipePage));
 
             Bind<INavService>().ToMethod(x => navService).InSingletonScope();
         }

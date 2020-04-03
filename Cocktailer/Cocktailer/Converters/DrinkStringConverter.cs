@@ -27,9 +27,11 @@ namespace Cocktailer.Converters
                 strlist = strlist[1].Replace("%", "").Split(',').ToList();
                 string name = strlist[0];
                 string perc = strlist[1];
-                return new DrinkEntry() 
-                { 
-                    Name = name, Brand = brand, Percentage = double.Parse(perc) 
+                return new DrinkEntry()
+                {
+                    Name = name,
+                    Brand = brand,
+                    Percentage = double.Parse(perc)
                 };
             }
             catch

@@ -30,32 +30,8 @@ namespace Cocktailer.ViewModels
             
             RecipeEntries = new ObservableCollection<RecipeEntry>(new List<RecipeEntry>()
             {
-                new RecipeEntry()
-                {
-                    Name = "Vodka O",
-                    Ingredients = new List<Ingredient>()
-                    {
-                        new Ingredient()
-                        {
-                            Drink = new DrinkEntry()
-                            {
-                                Name = "Vodka",
-                                Brand = "Gorbatschow",
-                                Percentage = 40
-                            },
-                            Amount = 100
-                        },
-                        new Ingredient()
-                        {
-                            Drink = new DrinkEntry()
-                            {
-                                Name = "Orangensaft",
-                                Percentage = 0
-                            }
-                        }
-
-                    }
-                }
+                
+                
             });
             var text = JsonConvert.SerializeObject(RecipeEntries[0]);
             Debug.WriteLine(text);

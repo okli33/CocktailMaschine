@@ -14,6 +14,7 @@
             <Button Text="Rezepte" Command="{Binding RecipesCommand}"/>
             <Button Text="Getränke" Command="{Binding DrinksCommand}"/>
             <Button Text="Konfigurationen" Command="{Binding ConfigurationsCommand}"/>
+            <Button Text="Bluetooth" Command="{Binding BluetoothCommand}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

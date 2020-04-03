@@ -5,7 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converters="clr-namespace:Cocktailer.Converters"
              mc:Ignorable="d"
-             x:Class="Cocktailer.Views.Configurations.EditConfigurationPage">
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels.Configurations;assembly=Cocktailer"
+             x:Class="Cocktailer.Views.Configurations.EditConfigurationPage"
+             Title="Konfiguration bearbeiten">
     <ContentPage.Resources>
         <converters:IntArrayStringConverter x:Key="PositionStringConverter"/>
         <converters:IntToStringConverter x:Key="IntStringConverter"/>
@@ -16,7 +18,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Padding="10">
-            <Entry Text="{Binding Entry.Name}" Placeholder="Name"/>
+            <Entry Text="{Binding Name}" Placeholder="Name"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -28,7 +30,7 @@
                 <CheckBox Grid.Column="0" IsChecked="{Binding SaveOld}" />
                 <Label Grid.Column="1" Text="alte Konfiguration erhalten" FontSize="Medium"/>
             </Grid>
-            <CollectionView ItemsSource="{Binding Entry.Spots}">
+            <CollectionView ItemsSource="{Binding SpotList}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="10">
@@ -43,9 +45,9 @@
                             <Label Grid.Row="0" Grid.Column="0" Text="Pos." Padding="15" FontAttributes="Bold"/>
                             <Label Grid.Row="1" Grid.Column="0" Text="{Binding Position, Converter= 
                             {StaticResource PositionStringConverter}}" Padding="15"/>
-                            <Picker ItemsSource="{Binding DrinkEntries}" 
-                                Grid.Row="0" Grid.Column="1" Title="Getränk" 
-                                SelectedItem="{Binding Drink, Converter={StaticResource DrinkStringConverter}}"/>
+                            <Picker ItemsSource="{x:Static vm:EditConfigurationViewModel.AvailableDrinks}"
+                                    Grid.Row="0" Grid.Column="1" Title="Getränk"
+                                    SelectedItem="{Binding Drink, Converter={StaticResource DrinkStringConverter}}"/>
                             <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"
                                Grid.Column="1" Grid.Row="1" Keyboard="Numeric"  Placeholder="Menge in ml"/>
                         </Grid>

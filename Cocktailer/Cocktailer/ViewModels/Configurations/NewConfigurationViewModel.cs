@@ -13,6 +13,7 @@ namespace Cocktailer.ViewModels.Configurations
 {
     public class NewConfigurationViewModel : BaseValidationViewModel
     {
+        public static ObservableCollection<DrinkEntry> AvailableDrinks { get; set; }
         private string name;
         public string Name
         {
@@ -46,9 +47,10 @@ namespace Cocktailer.ViewModels.Configurations
 
         public override async void Init()
         {
-            var Drinks = await memoryService.GetAvailable<DrinkEntry>();
+            AvailableDrinks = new ObservableCollection<DrinkEntry>(await 
+                memoryService.GetAvailable<DrinkEntry>());
             //(4,4) for current config, maybe make configurable later on
-            SpotList = new ObservableCollection<Spot>(SpotMaker.CreateSpotList(4, 4, Drinks));
+            SpotList = new ObservableCollection<Spot>(SpotMaker.CreateSpotList(4, 4));
             
         }
         Command saveCommand;
