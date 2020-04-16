@@ -1,16 +1,19 @@
-﻿using Cocktailer.Models.Entries;
+﻿
+using Android.OS;
+using Cocktailer.Models.Entries;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Cocktailer.Services
 {
     public interface IBluetoothCommunicationService
     {
-        byte[] Read();
+        Stream OutputStream { set; get; }
+        Stream InputStream { get; set; }
+        Task<byte[]> Read();
         Task Write(string message);
-        Task Connect(string name);
-        Task<IEnumerable<BluetoothEntry>>GetDevicesAsync();
-        bool Connected { get; }
+        void Init();
     }
 }

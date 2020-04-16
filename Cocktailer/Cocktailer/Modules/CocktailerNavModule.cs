@@ -28,6 +28,7 @@ namespace Cocktailer.Modules
             navService.RegisterViewMapping(typeof(NewRecipeViewModel), typeof(NewRecipePage));
             navService.RegisterViewMapping(typeof(RecipeDetailViewModel), typeof(RecipeDetailPage));
             navService.RegisterViewMapping(typeof(EditRecipeViewModel), typeof(EditRecipePage));
+            navService.RegisterViewMapping(typeof(BluetoothViewModel), typeof(BluetoothView));
 
             Bind<INavService>().ToMethod(x => navService).InSingletonScope();
         }

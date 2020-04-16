@@ -60,6 +60,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.5.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BluetoothActivity.cs" />
     <Compile Include="Core\CommunicationManagement\AcceptThread.cs" />
     <Compile Include="Core\CommunicationManagement\BluetoothConnectionManager.cs" />
     <Compile Include="Core\CommunicationManagement\BluetoothConnector.cs" />

@@ -17,5 +17,7 @@ namespace Cocktailer.ViewModels
             .NavigateTo<ConfigurationsViewModel>());
         public Command DrinksCommand => new Command(async () =>await NavService
             .NavigateTo<DrinksViewModel>());
+        public Command BluetoothCommand => new Command(async () => await
+            NavService.NavigateTo<BluetoothViewModel>());
     }
 }
