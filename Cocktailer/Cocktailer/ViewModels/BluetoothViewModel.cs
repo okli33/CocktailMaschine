@@ -73,7 +73,7 @@ namespace Cocktailer.ViewModels
         {
             try
             {
-                ReceivedMessage = Encoding.Default.GetString(await btService.Read());
+                ReceivedMessage = Encoding.ASCII.GetString(await btService.Read());
             }
             catch (Exception ex)
             {
