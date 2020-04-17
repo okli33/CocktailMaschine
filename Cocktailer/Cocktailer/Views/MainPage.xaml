@@ -10,11 +10,21 @@
         <ToolbarItem Text="Suff" Command="{Binding SuffCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout x:Name="menu">
-            <Button Text="Rezepte" Command="{Binding RecipesCommand}"/>
-            <Button Text="Getränke" Command="{Binding DrinksCommand}"/>
-            <Button Text="Konfigurationen" Command="{Binding ConfigurationsCommand}"/>
-            <Button Text="Bluetooth" Command="{Binding BluetoothCommand}"/>
+        <StackLayout x:Name="menu" VerticalOptions="CenterAndExpand" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="175"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Text="Rezepte" Command="{Binding RecipesCommand}"/>
+                <Button Grid.Row="1"  Text="Getränke" Command="{Binding DrinksCommand}"/>
+                <Button Grid.Row="2" Text="Konfigurationen" Command="{Binding ConfigurationsCommand}"/>
+                <Label Grid.Row="3" Text="Impressum" HorizontalOptions="Center" VerticalOptions="End"/>
+                <Label  Grid.Row="4" HorizontalTextAlignment="Center" Text="Icons made by DinosoftLabs hwww.flaticon.com/authors/dinosoftlabs from www.flaticon.com" />
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

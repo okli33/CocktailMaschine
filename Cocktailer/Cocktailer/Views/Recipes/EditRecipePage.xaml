@@ -6,7 +6,8 @@
              xmlns:converters="clr-namespace:Cocktailer.Converters"
              xmlns:vm="clr-namespace:Cocktailer.ViewModels.Recipes"
              mc:Ignorable="d"
-             x:Class="Cocktailer.Views.Recipes.EditRecipePage">
+             x:Class="Cocktailer.Views.Recipes.EditRecipePage"
+             Title="Bearbeiten">
     <ContentPage.Resources>
         <converters:DoubleStringConverter x:Key="DoubleStringConverter"/>
         <converters:IntToStringConverter x:Key="IntStringConverter"/>
@@ -16,7 +17,7 @@
         <ToolbarItem Text="Speichern" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="10">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*"/>

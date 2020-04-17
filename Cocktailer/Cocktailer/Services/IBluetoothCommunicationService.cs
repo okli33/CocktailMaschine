@@ -13,7 +13,7 @@ namespace Cocktailer.Services
         Stream OutputStream { set; get; }
         Stream InputStream { get; set; }
         Task<byte[]> Read();
-        Task Write(string message);
+        Task<string> Write(string message);
         void Init();
     }
 }

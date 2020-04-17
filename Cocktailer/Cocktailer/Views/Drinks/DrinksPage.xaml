@@ -15,7 +15,7 @@
             <CollectionView SelectionMode="Single" ItemsSource="{Binding DrinkEntries}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="10">
+                        <Grid Padding="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding 
                                 Source={RelativeSource AncestorType={x:Type vm:DrinksViewModel}},
@@ -26,14 +26,15 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" Text="{Binding Percentage, StringFormat='{0}%'}"/>
+                            <Label Grid.Column="1" Text="{Binding Percentage, StringFormat='{0}%'}"
+                                   VerticalTextAlignment="Center" FontSize="Large"/>
                             <Grid Grid.Column="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Text="{Binding Brand}" FontAttributes="Bold" />
-                                <Label Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label FontSize="Large" Grid.Column="0" Text="{Binding Brand}" FontAttributes="Bold" />
+                                <Label FontSize="Large" Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" />
                             </Grid>
                         </Grid>
                     </DataTemplate>

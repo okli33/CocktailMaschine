@@ -20,8 +20,8 @@ namespace Cocktailer.Services
             IFolder folder = null;
             List<T> availableObjects = new List<T>();
             try
-            {
-                folder = await subFolder<T>();
+            {                folder = await subFolder<T>();
+
             }
             catch (Exception ex)
             {
@@ -66,5 +66,7 @@ namespace Cocktailer.Services
                 return false;
             }
         }
+
+
     }
 }

@@ -19,7 +19,7 @@
             <CollectionView ItemsSource="{Binding RecipeEntries}" SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="10">
+                        <Grid Padding="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding
                                 Source={RelativeSource AncestorType={x:Type vm:RecipesViewModel}},
@@ -35,11 +35,12 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Label Grid.Column="1" VerticalTextAlignment="Center" Grid.RowSpan="2"
-                                   Text="{Binding Percentage, StringFormat='{0}%'}" FontAttributes="Bold"/>
-                            <Label Grid.Column="0" Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" 
+                                   Text="{Binding Percentage, StringFormat='{0}%'}" FontAttributes="Bold"
                                    FontSize="Medium"/>
+                            <Label Grid.Column="0" Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" 
+                                   FontSize="Large"/>
                             <Label Grid.Column="0" Grid.Row="1" Text="{Binding Ingredients, 
-                                Converter={StaticResource IngredientsToDrinkstring}}"/>
+                                Converter={StaticResource IngredientsToDrinkstring}}" FontSize="Medium"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

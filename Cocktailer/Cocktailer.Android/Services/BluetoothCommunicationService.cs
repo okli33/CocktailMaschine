@@ -39,7 +39,14 @@ namespace Cocktailer.Droid.Services
                         BluetoothDevice device = devices[0];
                         ParcelUuid[] uuids = device.GetUuids();
                         BluetoothSocket socket = device.CreateRfcommSocketToServiceRecord(uuids[0].Uuid);
-                        await socket.ConnectAsync();
+                        try
+                        {
+                            await socket.ConnectAsync();
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("Fehler beim Aufbau einer Bluetoothverbindung");
+                        }
                         OutputStream = socket.OutputStream;
                         InputStream = socket.InputStream;
                     }
@@ -49,11 +56,31 @@ namespace Cocktailer.Droid.Services
             }
         }
 
-        public async Task Write(string s)
+        public async Task<string> Write(string s)
         {
             try
             {
                 await OutputStream.WriteAsync(Encoding.ASCII.GetBytes(s));
+            }
+            catch (Java.IO.IOException ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            while (!InputStream.IsDataAvailable())
+            {
+                continue;
+            }
+            try
+            {
+                byte[] buffer = new byte[16 * 1024];
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    int read = InputStream.Read(buffer, 0, buffer.Length);
+                    {
+                        ms.Write(buffer, 0, read);
+                    }
+                    return Encoding.ASCII.GetString(ms.ToArray());//\r\n
+                }
             }
             catch (Java.IO.IOException ex)
             {

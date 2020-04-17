@@ -4,27 +4,41 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
              x:Class="Cocktailer.Views.CocktailmodePage"
              Title="Cocktails">
+    <ContentPage.Resources>
+        <converters:IngredientsToDrinkstring x:Key="IngredientsToDrinkstring"/>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <CollectionView SelectionMode="Single" ItemsSource="{Binding RecipeEntries}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="3*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.RowSpan="2" Text="{Binding Percentage}"/>
-                        <Label Grid.Column="1" Text="{Binding Name}"/>
-                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Ingredients}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <AbsoluteLayout>
+            <CollectionView SelectionMode="Single" ItemsSource="{Binding RecipeEntries}"
+                            SelectedItem="{Binding SelectedEntry}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10,20,0,50">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.RowSpan="2" Text="{Binding Percentage}" Grid.Column="1" VerticalTextAlignment="Center" FontSize="Medium" />
+                            <Label Grid.Column="0" Text="{Binding Name}" FontSize="Large" FontAttributes="Bold"/>
+                            <Label Grid.Column="0" Grid.Row="1" Text="{Binding Ingredients, 
+                                Converter={StaticResource IngredientsToDrinkstring}}" FontSize="Medium"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <ImageButton Source="cocktail.png" 
+                BackgroundColor="Transparent"
+                AbsoluteLayout.LayoutFlags="PositionProportional"  
+                AbsoluteLayout.LayoutBounds=".95,.95,80,80" 
+                Command="{Binding SendRecipeCommand}"
+                />
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -59,7 +59,7 @@ namespace Cocktailer.ViewModels
         {
             try
             {
-                await btService.Write(MessageToSend);
+                ReceivedMessage = await btService.Write(MessageToSend);
             }
             catch (Exception ex)
             {

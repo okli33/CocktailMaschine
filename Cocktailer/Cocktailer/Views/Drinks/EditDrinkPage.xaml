@@ -10,11 +10,11 @@
         <ToolbarItem Text="Speichern" Command="{Binding SaveDrink}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="10">
             <TableView Intent="Form">
                 <TableView.Root>
                     <TableSection>
-                        <EntryCell x:Name="brand" Label="Marke" Text="{Binding Entry.Brand}"/>
+                        <EntryCell x:Name="brand" Label="Marke" Text="{Binding Entry.Brand}"  />
                         <EntryCell x:Name="name" Label="Getränkeart" Text="{Binding Entry.Name}" />
                         <EntryCell x:Name="percentage" Label="Alkoholgehalt in %" Text="{Binding 
                             Entry.Percentage}" Keyboard="Numeric"/>

@@ -17,7 +17,7 @@
         <ToolbarItem Text="Speichern" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout Padding="10">
             <Entry Placeholder="Name" Text="{Binding Name}" FontAttributes="Bold" FontSize="Large"/>
             <CollectionView ItemsSource="{Binding Ingredients}">
                 <CollectionView.ItemTemplate>
@@ -36,7 +36,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="3*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="Menge in ml:" VerticalOptions="Center" FontSize="Medium"/>
+                                <Label Text="Menge in ml:" VerticalOptions="Center" FontSize="Medium" HorizontalTextAlignment="Start"/>
                                 <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"
                                    Keyboard="Numeric" Grid.Column="1">
                                 </Entry>

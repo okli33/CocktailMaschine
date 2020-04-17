@@ -11,22 +11,22 @@
         <ToolbarItem Text="Bearbeiten" Command="{Binding EditCommand}" CommandParameter="{Binding Entry}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid Padding="10">
+        <Grid Padding="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0" Grid.Row="0" Text="Marke"/>
-            <Label x:Name="brand" Grid.Column="1" Grid.Row="0" Text="{Binding Entry.Brand}" FontAttributes="Bold"/>
-            <Label Grid.Column="0" Grid.Row="1" Text="Getränk" />
-            <Label x:Name="name" Grid.Column="1" Grid.Row="1" Text="{Binding Entry.Name}" FontAttributes="Bold"/>
-            <Label Grid.Column="0" Grid.Row="2" Text="Alkoholgehalt"/>
-            <Label x:Name="percentage" Grid.Column="1" Grid.Row="2" Text="{Binding Entry.Percentage, StringFormat='{0}%'}" FontAttributes="Bold"/>
+            <Label Grid.Column="0" Grid.Row="0" Text="Marke" FontSize="Medium" VerticalTextAlignment="Center"/>
+            <Label x:Name="brand" Grid.Column="1" Grid.Row="0" Text="{Binding Entry.Brand}" FontAttributes="Bold" FontSize="Large" VerticalTextAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="1" Text="Getränk" FontSize="Medium" VerticalTextAlignment="Center" />
+            <Label x:Name="name" Grid.Column="1" Grid.Row="1" Text="{Binding Entry.Name}" FontAttributes="Bold" FontSize="Large" VerticalTextAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="2" Text="Alkoholgehalt" FontSize="Medium" VerticalTextAlignment="Center"/>
+            <Label x:Name="percentage" Grid.Column="1" Grid.Row="2" Text="{Binding Entry.Percentage, StringFormat='{0}%'}" FontAttributes="Bold" FontSize="Large" VerticalTextAlignment="Center"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
