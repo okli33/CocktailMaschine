@@ -19,11 +19,13 @@ namespace Cocktailer.ViewModels
         }
 
         private IMemoryService MemService;
-
-        public DrinksViewModel(INavService navService, IMemoryService memService) : base(navService)
+        private IAlertMessageService alertService;
+        public DrinksViewModel(INavService navService, IMemoryService memService,
+            IAlertMessageService alertService) : base(navService)
         {
             DrinkEntries = new ObservableCollection<DrinkEntry>();
             MemService = memService;
+            this.alertService = alertService;
         }
 
         public override void Init()
@@ -35,11 +37,16 @@ namespace Cocktailer.ViewModels
         {
             IsBusy = true;
             DrinkEntries.Clear();
-
-            DrinkEntries = new ObservableCollection<DrinkEntry>(
-                await MemService.GetAvailable<DrinkEntry>());
-            
-            IsBusy = false;
+            try
+            {
+                DrinkEntries = new ObservableCollection<DrinkEntry>(
+                    await MemService.GetAvailable<DrinkEntry>());
+            }
+            catch
+            {
+                await alertService.ShowErrorMessage("Fehler beim Laden der Daten, versuch's nochmal");
+            }
+            finally { IsBusy = false; }            
         }
 
         public Command<DrinkEntry> ViewCommand => new Command<DrinkEntry>(async entry =>

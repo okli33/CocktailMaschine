@@ -1,9 +1,8 @@
-﻿using Cocktailer.Models.DataManagement;
+﻿using Cocktailer.Models.Entries;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Cocktailer.Converters

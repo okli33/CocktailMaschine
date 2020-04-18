@@ -44,8 +44,11 @@ namespace Cocktailer.ViewModels
                 SaveDrink.ChangeCanExecute();
             }
         }
-        public NewDrinkViewModel(INavService navService, IMemoryService memService) : base(navService)
+        IAlertMessageService alertService;
+        public NewDrinkViewModel(INavService navService, IMemoryService memService,
+            IAlertMessageService alertService) : base(navService)
         {
+            this.alertService = alertService;
             MemoryService = memService;
         }
         public override void Init()
@@ -70,12 +73,17 @@ namespace Cocktailer.ViewModels
             try
             {
                 await MemoryService.Save<DrinkEntry>(newItem, $"{Brand}-{Name}-{Percentage}");
+                await NavService.GoBack();
+            }
+            catch
+            {
+                await alertService.ShowDataErrorMessage();
             }
             finally
             {
                 IsBusy = false;
             }
-            await NavService.GoBack();
+            
         }
         bool CanSave() => !string.IsNullOrWhiteSpace(Name) && !double.IsNaN(Percentage) && Percentage >= 0 
              && Percentage <= 100 && !HasErrors;

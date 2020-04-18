@@ -1,6 +1,4 @@
-﻿using Cocktailer.Models.DataManagement;
-
-namespace Cocktailer.Models.Entries
+﻿namespace Cocktailer.Models.Entries
 {
     public class DrinkEntry : IEntry
     {

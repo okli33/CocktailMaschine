@@ -24,10 +24,13 @@ namespace Cocktailer.ViewModels.Configurations
         }
 
         IMemoryService memoryService;
+        IAlertMessageService alertService;
 
-        public ConfigurationsViewModel(INavService navService, IMemoryService memService) : base(navService)
+        public ConfigurationsViewModel(INavService navService, IMemoryService memService,
+            IAlertMessageService alertService) : base(navService)
         {
             memoryService = memService;
+            this.alertService = alertService;
         }
         
         public override async void Init()
@@ -39,16 +42,37 @@ namespace Cocktailer.ViewModels.Configurations
         private async Task LoadConfigs()
         {
             IsBusy = true;
-            ConfigurationEntries = new ObservableCollection<ConfigurationEntry>(
-                await memoryService.GetAvailable<ConfigurationEntry>());
-            IsBusy = false;
+            try
+            {
+                ConfigurationEntries = new ObservableCollection<ConfigurationEntry>(
+                    await memoryService.GetAvailable<ConfigurationEntry>());
+            }
+            catch
+            {
+                await alertService
+                    .ShowErrorMessage("Daten konnten nicht geladen werden, versuchs nochmal");
+            }
+            finally 
+            {
+                IsBusy = false;
+            }
+            
         }
 
         public Command<ConfigurationEntry> ViewCommand => new Command<ConfigurationEntry>(entry => NavToDetail(entry));
             
         private async void NavToDetail(ConfigurationEntry entry)
         {
-            await NavService.NavigateTo<ConfigurationDetailViewModel, ConfigurationEntry>(entry);
+            try
+            {
+                await NavService.NavigateTo<ConfigurationDetailViewModel, ConfigurationEntry>(entry);
+            }
+            catch (Exception)
+            {
+                await alertService.ShowFailedNavigationMessage();
+                await NavService.NavigateTo<MainViewModel>();
+                NavService.ClearBackStack();
+            }
         }
 
         public Command NewCommand => new Command(async () => await NavService.NavigateTo<NewConfigurationViewModel>());

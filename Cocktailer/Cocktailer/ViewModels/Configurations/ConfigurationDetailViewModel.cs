@@ -1,10 +1,7 @@
-﻿using Cocktailer.Models.ConfigurationManagement;
-using Cocktailer.Models.Entries;
+﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
-using Cocktailer.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Cocktailer.ViewModels.Configurations
@@ -21,19 +18,47 @@ namespace Cocktailer.ViewModels.Configurations
                 OnPropertyChanged();
             }
         }
-
-        public ConfigurationDetailViewModel(INavService navService) : base(navService)
+        IAlertMessageService alertService;
+        public ConfigurationDetailViewModel(INavService navService,
+            IAlertMessageService alertService) : base(navService)
         {
+            this.alertService = alertService;
         }
         public override void Init(ConfigurationEntry entry)
         {
             Entry = entry;
         }
 
-        public Command ViewCommand => new Command(async () => await
-            NavService.NavigateTo<MainViewModel>());
+        public Command ViewCommand => new Command(async () => await NavigateToMain());
+        private async Task NavigateToMain()
+        {
+            try
+            {
+                await NavService.NavigateTo<MainViewModel>();
+            }
+            catch (Exception)
+            {
+                await alertService.ShowFailedNavigationMessage();
+                await NavService.NavigateTo<MainViewModel>();
+                NavService.ClearBackStack();
+            }
+        }
 
-        public Command EditCommand => new Command(async () => await
-            NavService.NavigateTo<EditConfigurationViewModel, ConfigurationEntry>(Entry));
+        public Command EditCommand => new Command(async () => await NavigateToEdit());
+            
+
+        private async Task NavigateToEdit()
+        {
+            try
+            {
+                await NavService.NavigateTo<EditConfigurationViewModel, ConfigurationEntry>(Entry);
+            }
+            catch (Exception)
+            {
+                await alertService.ShowFailedNavigationMessage();
+                await NavService.NavigateTo<MainViewModel>();
+                NavService.ClearBackStack();
+            }
+        }
     }
 }

@@ -20,12 +20,13 @@ namespace Cocktailer.Droid.Services
     public class BluetoothCommunicationService : Activity, IBluetoothCommunicationService
     {
         BluetoothAdapter btAdapter;
+        BluetoothSocket socket;
 
         public Stream OutputStream { set; get; }
 
         public Stream InputStream { set; get; }
 
-        public async void Init()
+        public async Task<bool> Init()
         {
             btAdapter = BluetoothAdapter.DefaultAdapter;
             if (btAdapter != null)
@@ -36,9 +37,14 @@ namespace Cocktailer.Droid.Services
                     if (bondedDevices.Count > 0)
                     {
                         var devices = bondedDevices.ToList();
-                        BluetoothDevice device = devices[0];
+                        BluetoothDevice device = devices
+                            .FirstOrDefault(x => x.Name.Equals("DSD TECH HC-05"));
+                        if (device == null)
+                        {
+                            return false;
+                        }
                         ParcelUuid[] uuids = device.GetUuids();
-                        BluetoothSocket socket = device.CreateRfcommSocketToServiceRecord(uuids[0].Uuid);
+                        socket = device.CreateRfcommSocketToServiceRecord(uuids[0].Uuid);
                         try
                         {
                             await socket.ConnectAsync();
@@ -50,10 +56,9 @@ namespace Cocktailer.Droid.Services
                         OutputStream = socket.OutputStream;
                         InputStream = socket.InputStream;
                     }
-
-
                 }
             }
+            return true;
         }
 
         public async Task<string> Write(string s)
@@ -70,22 +75,23 @@ namespace Cocktailer.Droid.Services
             {
                 continue;
             }
-            try
-            {
-                byte[] buffer = new byte[16 * 1024];
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    int read = InputStream.Read(buffer, 0, buffer.Length);
-                    {
-                        ms.Write(buffer, 0, read);
-                    }
-                    return Encoding.ASCII.GetString(ms.ToArray());//\r\n
-                }
-            }
-            catch (Java.IO.IOException ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            //try
+            //{
+            //byte[] buffer = new byte[16 * 1024];
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //int read = InputStream.Read(buffer, 0, buffer.Length);
+            //{
+            //ms.Write(buffer, Convert.ToInt32(ms.Length), read);
+            //}
+            //return Encoding.ASCII.GetString(ms.ToArray());
+            //}
+            //}
+            //catch (Java.IO.IOException ex)
+            //{
+            //throw new Exception(ex.Message);
+            //}
+            return "";
         }
 
         public async Task<byte[]> Read()
@@ -102,6 +108,15 @@ namespace Cocktailer.Droid.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public void TryCloseConnection()
+        {
+            try
+            {
+                socket.Close();
+            }
+            catch { }
         }
 
     }

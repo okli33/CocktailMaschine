@@ -1,11 +1,7 @@
-﻿using Cocktailer.Models.DataManagement;
-using Cocktailer.Models.Entries;
+﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -50,8 +46,11 @@ namespace Cocktailer.ViewModels.Recipes
             }
         }
         private IMemoryService memService;
-        public NewRecipeViewModel(INavService navService, IMemoryService memoryService) : base(navService)
+        IAlertMessageService alertService;
+        public NewRecipeViewModel(INavService navService, IMemoryService memoryService,
+            IAlertMessageService alertService) : base(navService)
         {
+            this.alertService = alertService;
             memService = memoryService;
         }
 
@@ -93,14 +92,18 @@ namespace Cocktailer.ViewModels.Recipes
             {
                 IsBusy = true;
                 await memService.Save(newEntry, Name);
-                IsBusy = false;
+                
                 NavService.ClearBackStack();
                 await NavService.NavigateTo<MainViewModel>();
                 await NavService.NavigateTo<RecipesViewModel>();
             }
             catch
             {
-                await Application.Current.MainPage.DisplayAlert("Fehler beim speichern", "Versuche es nochmal oder zu einem späteren Zeitpunkt", "OK");
+                await alertService.ShowDataErrorMessage();
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
         Command addIngredientCommand;

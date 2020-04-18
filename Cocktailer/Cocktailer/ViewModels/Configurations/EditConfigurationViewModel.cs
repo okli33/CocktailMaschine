@@ -1,11 +1,7 @@
-﻿using Cocktailer.Models.ConfigurationManagement;
-using Cocktailer.Models.Entries;
+﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -58,9 +54,12 @@ namespace Cocktailer.ViewModels.Configurations
             }
         }
         private IMemoryService memService;
-        public EditConfigurationViewModel(INavService navService, IMemoryService memoryService) : base(navService)
+        IAlertMessageService alertService;
+        public EditConfigurationViewModel(INavService navService, IMemoryService memoryService,
+            IAlertMessageService alertService) : base(navService)
         {
             memService = memoryService;
+            this.alertService = alertService; 
         }
 
         public override async void Init(ConfigurationEntry entry)
@@ -89,10 +88,18 @@ namespace Cocktailer.ViewModels.Configurations
                     Spots = SpotList.ToList(),
                     Name = Name
                 };
-                await memService.Save(Entry, Entry.Name);
-                NavService.ClearBackStack();
-                await NavService.NavigateTo<MainViewModel>();
-                await NavService.NavigateTo<ConfigurationsViewModel>();
+                try
+                {
+                    await memService.Save(Entry, Entry.Name);
+                    NavService.ClearBackStack();
+                    await NavService.NavigateTo<MainViewModel>();
+                    await NavService.NavigateTo<ConfigurationsViewModel>();
+                }
+                catch
+                {
+                    await alertService.ShowDataErrorMessage();
+                }
+                
             }
         }
 
@@ -101,17 +108,28 @@ namespace Cocktailer.ViewModels.Configurations
         {
             IsBusy = true;
             var fileName = originalEntry;
-            var success = await memService.Delete<ConfigurationEntry>(fileName);
-            if (!success)
+            try
             {
-                await Application.Current.MainPage.DisplayAlert("Fehler", "Löschen ist fehlgeschlagen", "OK");
-                IsBusy = false;
-                return;
+                var success = await memService.Delete<ConfigurationEntry>(fileName);
+                if (!success)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Fehler", "Löschen ist fehlgeschlagen", "OK");
+                    IsBusy = false;
+                    return;
+                }
+
+                NavService.ClearBackStack();
+                await NavService.NavigateTo<MainViewModel>();
+                await NavService.NavigateTo<ConfigurationsViewModel>();
             }
-            IsBusy = false;
-            NavService.ClearBackStack();
-            await NavService.NavigateTo<MainViewModel>();
-            await NavService.NavigateTo<ConfigurationsViewModel>();
+            catch
+            {
+                await alertService.ShowDataErrorMessage();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }

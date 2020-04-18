@@ -22,5 +22,19 @@ namespace Cocktailer.Services
         {
             await Application.Current.MainPage.DisplayAlert("Erfolg", message, "Prost");
         }
+
+        public async Task ShowFailedNavigationMessage()
+        {
+            await Application.Current.MainPage.DisplayAlert("Fehler",
+                "Es ist ein Fehler bei der Navigation aufgetreten. \n\n Du wirst zum Hauptmenü zurückgeleitet",
+                "Verstanden");
+        }
+
+        public async Task ShowDataErrorMessage()
+        {
+            await Application.Current.MainPage.DisplayAlert("Fehler",
+                "Es ist ein Fehler beim Laden der Daten aufgetreten, versuch's nochmal",
+                "Verstanden");
+        }
     }
 }

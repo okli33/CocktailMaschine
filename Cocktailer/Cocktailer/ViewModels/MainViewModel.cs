@@ -8,7 +8,13 @@ namespace Cocktailer.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public MainViewModel(INavService navService) : base(navService) { }
+        IBluetoothCommunicationService btService;
+        public MainViewModel(INavService navService, 
+            IBluetoothCommunicationService btService) : base(navService) 
+        {
+            this.btService = btService;
+            btService.TryCloseConnection();
+        }
 
         public Command SuffCommand => new Command(async () => await NavService
             .NavigateTo<SelectConfigurationViewModel>());

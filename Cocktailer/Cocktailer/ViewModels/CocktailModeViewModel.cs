@@ -48,19 +48,20 @@ namespace Cocktailer.ViewModels
         }
         public override async void Init(ConfigurationEntry config)
         {
+            btService.TryCloseConnection();
             Config = config;
             try
             {
-#if DEBUG
-
-#else
-                btService.Init();
-#endif
+                if (!await btService.Init())
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception)
             {
                 await alertService.ShowErrorMessage("Konnte keine Bluetooth Verbindung aufbauen");
                 await NavService.NavigateTo<MainViewModel>();
+                btService.TryCloseConnection();
                 NavService.ClearBackStack();
             }
 
@@ -84,17 +85,30 @@ namespace Cocktailer.ViewModels
                     counter++;
                 }
             }
-            var configurationDrinks = Config.Spots.Select(x => x.Drink);
+            var configurationDrinks = Config.Spots.Select(x => x.Drink).ToList();
             foreach (var recipe in recipes)
             {
                 var possible = true;
                 foreach (var ingredient in recipe.Ingredients.Select(x => x.Drink))
                 {
-                    if (!configurationDrinks.Where(x => x.Brand == ingredient.Brand
-                        && x.Name == ingredient.Name).Any())
+                    try
                     {
-                        possible = false;
-                        break;
+                        if (!configurationDrinks.Where(x => x.Brand == ingredient.Brand
+                            && x.Name == ingredient.Name).Any())
+                        {
+                            possible = false;
+                            break;
+                        }
+                    }
+                    catch
+                    {
+                        await alertService.ShowErrorMessage("Es ist ein Fehler"
+                            + " mit der Konfiguration aufgetreten."
+                            + "\n\n Du wirst zurück ins Haupmenü geleitet.");
+                        await NavService.NavigateTo<MainViewModel>();
+                        NavService.ClearBackStack();
+                        btService.TryCloseConnection();
+                        return null;
                     }
                 }
                 if (possible)
@@ -112,7 +126,7 @@ namespace Cocktailer.ViewModels
             IsBusy = true;
             try
             {
-                await alertService.ShowAlertMessage("Cocktail wird zubereitet, bitte kurz warten");
+                await alertService.ShowAlertMessage("Cocktail kann zubereitet werden. \n\nBitte den Knopf betätigen");
                 string recipe = "";
                 try
                 {
@@ -141,23 +155,27 @@ namespace Cocktailer.ViewModels
                 {
                     SelectedEntry = null;
                 }
-                if (answer.StartsWith("0"))
+                if (answer == "0" || answer == "1")
                 {
                     await alertService.ShowSuccessMessage("Cocktail erfolgreich zubereitet");
-                    SelectedEntry = null;
                     return;
                 }
-                if (answer.StartsWith("1"))
+                else if (answer.StartsWith("0") || answer.StartsWith("1"))
                 {
                     var pos = answer.Substring(1).Replace("\r\n", "");
                     var DrinkPos = SpotConversions.FirstOrDefault(x => x.Value == pos).Key;
                     var emptyDrink = Config.Spots.FirstOrDefault(x => x.X.ToString() + x.Y.ToString() == DrinkPos);
                     await alertService.ShowErrorMessage("Folgendes Getränk ist leer und sollte ausgetauscht werden:"
-                        + "\r\n\r\n" + emptyDrink.Drink.Brand + emptyDrink.Drink.Name);
-                    SelectedEntry = null;
+                        + "\r\n\r\n" + emptyDrink.Drink.Brand + " " + emptyDrink.Drink.Name);
                     return;
                 }
+                else
+                {
+                    await alertService.ShowAlertMessage("Keine Antwort empfangen, überprüfe ob alles"
+                        + " richtig geklappt hat");
+                }
             }
+            catch { }
             finally
             {
                 IsBusy = false;

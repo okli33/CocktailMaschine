@@ -1,4 +1,4 @@
-﻿namespace Cocktailer.Models.DataManagement
+﻿namespace Cocktailer.Models.Entries
 {
     public interface IAmSaveable
     {

@@ -14,6 +14,7 @@ namespace Cocktailer.Services
         Stream InputStream { get; set; }
         Task<byte[]> Read();
         Task<string> Write(string message);
-        void Init();
+        Task<bool> Init();
+        void TryCloseConnection();
     }
 }

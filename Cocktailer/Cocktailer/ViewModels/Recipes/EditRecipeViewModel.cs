@@ -1,5 +1,4 @@
-﻿using Cocktailer.Models.DataManagement;
-using Cocktailer.Models.Entries;
+﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -55,8 +54,11 @@ namespace Cocktailer.ViewModels.Recipes
         }
 
         IMemoryService memService;
-        public EditRecipeViewModel(INavService navService, IMemoryService memory) : base(navService)
+        IAlertMessageService alertService;
+        public EditRecipeViewModel(INavService navService, IMemoryService memory,
+            IAlertMessageService alertService) : base(navService)
         {
+            this.alertService = alertService;
             memService = memory;
         }
 
@@ -103,10 +105,17 @@ namespace Cocktailer.ViewModels.Recipes
 
         private async Task Delete()
         {
-            await memService.Delete<RecipeEntry>(originalName);
-            NavService.ClearBackStack();
-            await NavService.NavigateTo<MainViewModel>();
-            await NavService.NavigateTo<RecipesViewModel>();
+            try
+            {
+                await memService.Delete<RecipeEntry>(originalName);
+                NavService.ClearBackStack();
+                await NavService.NavigateTo<MainViewModel>();
+                await NavService.NavigateTo<RecipesViewModel>();
+            }
+            catch
+            {
+                await alertService.ShowDataErrorMessage();
+            }
         }
 
         private void RefreshPercentage()
@@ -129,17 +138,23 @@ namespace Cocktailer.ViewModels.Recipes
                 Name = Name,
                 Percentage = Percentage
             };
-            if (originalName == Name)
-                await memService.Save(vEntry, Name);
-            else
+            try
             {
-                await memService.Delete<RecipeEntry>(originalName);
-                await memService.Save(Entry, Name);
+                if (originalName == Name)
+                    await memService.Save(vEntry, Name);
+                else
+                {
+                    await memService.Delete<RecipeEntry>(originalName);
+                    await memService.Save(Entry, Name);
+                }
+                NavService.ClearBackStack();
+                await NavService.NavigateTo<MainViewModel>();
+                await NavService.NavigateTo<RecipesViewModel>();
             }
-            NavService.ClearBackStack();
-            await NavService.NavigateTo<MainViewModel>();
-            await NavService.NavigateTo<RecipesViewModel>();
-            
+            catch
+            {
+                await alertService.ShowDataErrorMessage();
+            }            
         }
     }
 }

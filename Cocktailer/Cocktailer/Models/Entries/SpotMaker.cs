@@ -1,9 +1,6 @@
-﻿using Cocktailer.Models.DataManagement;
-using Cocktailer.Models.Entries;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
-namespace Cocktailer.Models.ConfigurationManagement
+namespace Cocktailer.Models.Entries
 {
     public class SpotMaker
     {

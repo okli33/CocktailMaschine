@@ -1,9 +1,5 @@
-﻿using Cocktailer.Models.ConfigurationManagement;
-using Cocktailer.Models.DataManagement;
-using Cocktailer.Models.Entries;
+﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,16 +35,25 @@ namespace Cocktailer.ViewModels.Configurations
        
 
         public IMemoryService memoryService;
-
-        public NewConfigurationViewModel(INavService navService, IMemoryService memService) : base(navService)
+        private IAlertMessageService alertService;
+        public NewConfigurationViewModel(INavService navService, IMemoryService memService,
+            IAlertMessageService alertService) : base(navService)
         {
+            this.alertService = alertService;
             memoryService = memService;
         }
 
         public override async void Init()
         {
-            AvailableDrinks = new ObservableCollection<DrinkEntry>(await 
-                memoryService.GetAvailable<DrinkEntry>());
+            try
+            {
+                AvailableDrinks = new ObservableCollection<DrinkEntry>(await
+                    memoryService.GetAvailable<DrinkEntry>());
+            }
+            catch
+            {
+                await alertService.ShowErrorMessage("Fehler beim Lesen von Daten, versuch's nochmal");
+            }
             //(4,4) for current config, maybe make configurable later on
             SpotList = new ObservableCollection<Spot>(SpotMaker.CreateSpotList(4, 4));
             
@@ -64,8 +69,15 @@ namespace Cocktailer.ViewModels.Configurations
                 Name = Name,
                 Spots = SpotList.ToList()
             };
-            await memoryService.Save<ConfigurationEntry>(config, Name);
-            await NavService.GoBack();
+            try
+            {
+                await memoryService.Save(config, Name);
+                await NavService.GoBack();
+            }
+            catch
+            {
+                await alertService.ShowDataErrorMessage();
+            }
         }
 
         bool CanSave() => !string.IsNullOrEmpty(Name) 

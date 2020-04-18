@@ -10,5 +10,7 @@ namespace Cocktailer.Services
         Task ShowErrorMessage(string message);
         Task ShowAlertMessage(string message);
         Task ShowSuccessMessage(string message);
+        Task ShowFailedNavigationMessage();
+        Task ShowDataErrorMessage();
     }
 }

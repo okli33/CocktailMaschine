@@ -22,8 +22,11 @@ namespace Cocktailer.ViewModels
             }
         }
         private IMemoryService MemoryService;
-        public EditDrinkViewModel(INavService navService, IMemoryService memService) : base(navService)
+        IAlertMessageService alertService;
+        public EditDrinkViewModel(INavService navService, IMemoryService memService,
+            IAlertMessageService alertService) : base(navService)
         {
+            this.alertService = alertService; 
             MemoryService = memService;
         }
 
@@ -50,12 +53,20 @@ namespace Cocktailer.ViewModels
         async Task Save()
         {
             var oldFileName = $"{originalEntry.Brand}-{originalEntry.Name}-{originalEntry.Percentage}";
-            await MemoryService.Delete<DrinkEntry>(oldFileName);
+            try
+            {
+                await MemoryService.Delete<DrinkEntry>(oldFileName);
+            }
+            catch { await alertService.ShowDataErrorMessage();  return; }
             IsBusy = true;
             try
             {
                 await MemoryService.Save
                     (Entry, $"{Entry.Brand}-{Entry.Name}-{Entry.Percentage}");
+            }
+            catch
+            {
+                await alertService.ShowDataErrorMessage();
             }
             finally
             {
@@ -69,8 +80,14 @@ namespace Cocktailer.ViewModels
         async Task Delete()
         {
             IsBusy = true;
+            bool success = false;
             var fileName = $"{originalEntry.Brand}-{originalEntry.Name}-{originalEntry.Percentage}";
-            var success = await MemoryService.Delete<DrinkEntry>(fileName);
+            try
+            {
+                success = await MemoryService.Delete<DrinkEntry>(fileName);
+            }
+            catch { IsBusy = false; await alertService.ShowDataErrorMessage(); return; }
+
             if (!success)
             {
                 await App.Current.MainPage.DisplayAlert("Fehler", "Löschen ist fehlgeschlagen", "OK");

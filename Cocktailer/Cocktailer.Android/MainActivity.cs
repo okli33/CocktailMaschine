@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Views;
 using Cocktailer.Droid.Modules;
 
 namespace Cocktailer.Droid

@@ -1,5 +1,4 @@
-﻿using Cocktailer.Models.DataManagement;
-using Cocktailer.Models.Entries;
+﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 using System.Collections.ObjectModel;
 using System.Linq;

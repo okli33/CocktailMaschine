@@ -1,10 +1,6 @@
 ﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
-using Microsoft.Runtime.CompilerServices;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -35,15 +31,27 @@ namespace Cocktailer.ViewModels
             }
         }
         IMemoryService memService;
-        public SelectConfigurationViewModel(INavService navService, IMemoryService memService) : base(navService)
+        IAlertMessageService alertService;
+        public SelectConfigurationViewModel(INavService navService, IMemoryService memService,
+            IAlertMessageService alertService) : base(navService)
         {
             this.memService = memService;
+            this.alertService = alertService;
         }
 
         public override async void Init()
         {
-            Configurations = new ObservableCollection<ConfigurationEntry>
-                (await memService.GetAvailable<ConfigurationEntry>());
+            SelectedConfiguration = null;
+            try
+            {
+                Configurations = new ObservableCollection<ConfigurationEntry>
+                    (await memService.GetAvailable<ConfigurationEntry>());
+            }
+            catch
+            {
+                Configurations = new ObservableCollection<ConfigurationEntry>();
+                await alertService.ShowErrorMessage("Fehler beim Lesen der Daten, versuch's nochmal");
+            }
         }
 
         private Command nextPageCommand;
