@@ -18,7 +18,7 @@ namespace Cocktailer.Models.Entries
             {
                 for (int y = 0; y < height; y++)
                 {
-                    spotlist.Add(MakeSpot(x, y, null));
+                    spotlist.Add(MakeSpot(x, y, new DrinkEntry()));
                 }
             }
             return spotlist;

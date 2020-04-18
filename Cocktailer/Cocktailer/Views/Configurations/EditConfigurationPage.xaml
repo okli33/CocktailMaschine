@@ -12,6 +12,7 @@
         <converters:IntArrayStringConverter x:Key="PositionStringConverter"/>
         <converters:IntToStringConverter x:Key="IntStringConverter"/>
         <converters:DrinkStringConverter x:Key="DrinkStringConverter"/>
+        <converters:DrinkIndexConverter x:Key="DrinkIndexConverter"/>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Speichern" Command="{Binding SaveCommand}"/>
@@ -47,7 +48,7 @@
                             {StaticResource PositionStringConverter}}" Padding="15"/>
                             <Picker ItemsSource="{x:Static vm:EditConfigurationViewModel.AvailableDrinks}"
                                     Grid.Row="0" Grid.Column="1" Title="Getränk"
-                                    SelectedItem="{Binding Drink, Converter={StaticResource DrinkStringConverter}}"/>
+                                    SelectedIndex="{Binding Drink, Converter={StaticResource DrinkIndexConverter}}"/>
                             <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"
                                Grid.Column="1" Grid.Row="1" Keyboard="Numeric"  Placeholder="Menge in ml"/>
                         </Grid>

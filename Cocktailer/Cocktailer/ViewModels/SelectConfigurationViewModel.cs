@@ -32,15 +32,17 @@ namespace Cocktailer.ViewModels
         }
         IMemoryService memService;
         IAlertMessageService alertService;
+        IBluetoothCommunicationService btService;
         public SelectConfigurationViewModel(INavService navService, IMemoryService memService,
-            IAlertMessageService alertService) : base(navService)
+            IAlertMessageService alertService, IBluetoothCommunicationService btService) : base(navService)
         {
             this.memService = memService;
             this.alertService = alertService;
+            this.btService = btService;
         }
 
         public override async void Init()
-        {
+        { 
             SelectedConfiguration = null;
             try
             {

@@ -9,7 +9,7 @@ namespace Cocktailer.ViewModels.Configurations
 {
     public class NewConfigurationViewModel : BaseValidationViewModel
     {
-        public static ObservableCollection<DrinkEntry> AvailableDrinks { get; set; }
+        public static ObservableCollection<string> AvailableDrinks { get; set; }
         private string name;
         public string Name
         {
@@ -34,21 +34,23 @@ namespace Cocktailer.ViewModels.Configurations
         }
        
 
-        public IMemoryService memoryService;
+        public IMemoryService memService;
         private IAlertMessageService alertService;
         public NewConfigurationViewModel(INavService navService, IMemoryService memService,
             IAlertMessageService alertService) : base(navService)
         {
             this.alertService = alertService;
-            memoryService = memService;
+            this.memService = memService;
         }
 
         public override async void Init()
         {
             try
             {
-                AvailableDrinks = new ObservableCollection<DrinkEntry>(await
-                    memoryService.GetAvailable<DrinkEntry>());
+                var Drinks = await memService.GetAvailable<DrinkEntry>();
+                AvailableDrinks = new ObservableCollection<string>(Drinks
+                .Select(x => x.Brand + "/" + x.Name + "," + x.Percentage + "%").ToList());
+                DrinkList.AvailableDrinks = Drinks.ToList();
             }
             catch
             {
@@ -71,7 +73,7 @@ namespace Cocktailer.ViewModels.Configurations
             };
             try
             {
-                await memoryService.Save(config, Name);
+                await memService.Save(config, Name);
                 await NavService.GoBack();
             }
             catch

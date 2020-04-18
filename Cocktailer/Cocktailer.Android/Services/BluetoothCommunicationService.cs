@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Bluetooth;
 using Android.Content;
+using Android.Net;
 using Android.OS;
 using Cocktailer.Models.Entries;
 using Cocktailer.Services;
@@ -115,6 +116,7 @@ namespace Cocktailer.Droid.Services
             try
             {
                 socket.Close();
+                socket.Dispose();
             }
             catch { }
         }

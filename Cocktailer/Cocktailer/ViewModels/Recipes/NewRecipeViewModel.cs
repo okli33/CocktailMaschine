@@ -56,10 +56,11 @@ namespace Cocktailer.ViewModels.Recipes
 
         public override async void Init()
         {
+            var Drinks = await memService.GetAvailable<DrinkEntry>();
             Ingredients = new ObservableCollection<Ingredient>();
-            AvailableDrinks = new ObservableCollection<string>((await memService
-                .GetAvailable<DrinkEntry>())
+            AvailableDrinks = new ObservableCollection<string>(Drinks
                 .Select(x => x.Brand + "/" + x.Name + "," + x.Percentage + "%").ToList());
+            DrinkList.AvailableDrinks = Drinks.ToList();
         }
         private void CalculatePercentage()
         {

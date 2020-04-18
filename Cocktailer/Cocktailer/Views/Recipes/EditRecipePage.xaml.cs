@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cocktailer.ViewModels.Recipes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,11 @@ namespace Cocktailer.Views.Recipes
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditRecipePage : ContentPage
     {
+        EditRecipeViewModel ViewModel => BindingContext as EditRecipeViewModel;
         public EditRecipePage()
         {
             InitializeComponent();
+
         }
     }
 }

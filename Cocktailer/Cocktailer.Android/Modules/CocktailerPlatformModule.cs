@@ -8,9 +8,8 @@ namespace Cocktailer.Droid.Modules
     {
         public override void Load()
         {
-            Bind<IBluetoothCommunicationService>()
-                .To<BluetoothCommunicationService>()
-                .InSingletonScope();
+            IBluetoothCommunicationService btService = new BluetoothCommunicationService();
+            Bind<IBluetoothCommunicationService>().ToMethod(x => btService).InSingletonScope();
         }
     }
 }

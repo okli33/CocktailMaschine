@@ -13,7 +13,6 @@ namespace Cocktailer.ViewModels
             IBluetoothCommunicationService btService) : base(navService) 
         {
             this.btService = btService;
-            btService.TryCloseConnection();
         }
 
         public Command SuffCommand => new Command(async () => await NavService

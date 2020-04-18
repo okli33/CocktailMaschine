@@ -10,5 +10,16 @@
         {
             return $"{Brand}/{Name}, {Percentage}%"; 
         }
+        public override bool Equals(object obj)
+        {
+            if (obj is DrinkEntry)
+            {
+                var drobj = (DrinkEntry)obj;
+                return drobj.Brand == this.Brand
+                    && drobj.Name == this.Name
+                    && drobj.Percentage == this.Percentage;
+            }
+            return false;
+        }
     }
 }

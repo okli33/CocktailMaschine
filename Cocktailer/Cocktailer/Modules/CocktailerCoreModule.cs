@@ -13,6 +13,7 @@ namespace Cocktailer.Modules
         {
             IAlertMessageService alertMessageService = new AlertMessageService();
             Bind<MainViewModel>().ToSelf();
+            Bind<DrinkList>().ToSelf().InSingletonScope();
 
             Bind<DrinksViewModel>().ToSelf();
             Bind<NewDrinkViewModel>().ToSelf();

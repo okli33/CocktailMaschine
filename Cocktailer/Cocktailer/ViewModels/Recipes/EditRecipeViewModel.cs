@@ -1,5 +1,6 @@
 ﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,9 @@ namespace Cocktailer.ViewModels.Recipes
 {
     public class EditRecipeViewModel : BaseViewModel<RecipeEntry>
     {
+        public static int GetIndex(Ingredient ing) => 
+            AvailableDrinks.IndexOf(ing.Drink.Brand 
+                + "/" + ing.Drink.Name + "," + ing.Drink.Percentage + "%"); 
         private RecipeEntry entry;
         public RecipeEntry Entry
         {
@@ -64,14 +68,16 @@ namespace Cocktailer.ViewModels.Recipes
 
         public override async void Init(RecipeEntry entry)
         {
+            var Drinks = await memService.GetAvailable<DrinkEntry>();
+            AvailableDrinks = new ObservableCollection<string>(Drinks
+                .Select(x => x.Brand + "/" + x.Name + "," + x.Percentage + "%").ToList());
+            DrinkList.AvailableDrinks = Drinks.ToList() ;
             Entry = entry;
             originalName = entry.Name;
             Name = entry.Name;
             Ingredients = new ObservableCollection<Ingredient>(entry.Ingredients);
             Percentage = entry.Percentage;
-            AvailableDrinks = new ObservableCollection<string>((await memService
-                .GetAvailable<DrinkEntry>())
-                .Select(x => x.Brand + "/" + x.Name + "," + x.Percentage + "%").ToList());
+            
         }
 
         private Command addIngredientCommand;

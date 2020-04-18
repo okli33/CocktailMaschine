@@ -64,9 +64,10 @@ namespace Cocktailer.ViewModels.Configurations
 
         public override async void Init(ConfigurationEntry entry)
         {
-            AvailableDrinks = new ObservableCollection<string>((await memService
-                .GetAvailable<DrinkEntry>())
+            var Drinks = await memService.GetAvailable<DrinkEntry>();
+            AvailableDrinks = new ObservableCollection<string>(Drinks
                 .Select(x => x.Brand + "/" + x.Name + "," + x.Percentage + "%").ToList());
+            DrinkList.AvailableDrinks = Drinks.ToList();
             Entry = entry;
             SpotList = new ObservableCollection<Spot>(Entry.Spots);
             Name = entry.Name;

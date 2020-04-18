@@ -46,9 +46,12 @@ namespace Cocktailer.ViewModels
             this.btService = btService;
             this.alertService = alertService;
         }
-        public override async void Init(ConfigurationEntry config)
+        public void CloseBluetoothConnection()
         {
             btService.TryCloseConnection();
+        }
+        public override async void Init(ConfigurationEntry config)
+        {
             Config = config;
             try
             {
@@ -61,7 +64,6 @@ namespace Cocktailer.ViewModels
             {
                 await alertService.ShowErrorMessage("Konnte keine Bluetooth Verbindung aufbauen");
                 await NavService.NavigateTo<MainViewModel>();
-                btService.TryCloseConnection();
                 NavService.ClearBackStack();
             }
 
@@ -107,7 +109,6 @@ namespace Cocktailer.ViewModels
                             + "\n\n Du wirst zurück ins Haupmenü geleitet.");
                         await NavService.NavigateTo<MainViewModel>();
                         NavService.ClearBackStack();
-                        btService.TryCloseConnection();
                         return null;
                     }
                 }
