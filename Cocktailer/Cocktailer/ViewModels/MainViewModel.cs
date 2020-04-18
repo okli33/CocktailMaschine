@@ -1,7 +1,7 @@
 ﻿using Cocktailer.Services;
 using Cocktailer.ViewModels.Configurations;
+using Cocktailer.ViewModels.DataExchange;
 using Cocktailer.ViewModels.Recipes;
-using Cocktailer.Views;
 using Xamarin.Forms;
 
 namespace Cocktailer.ViewModels
@@ -23,6 +23,8 @@ namespace Cocktailer.ViewModels
             .NavigateTo<ConfigurationsViewModel>());
         public Command DrinksCommand => new Command(async () =>await NavService
             .NavigateTo<DrinksViewModel>());
+        public Command SelectModeCommand => new Command(async () => await NavService
+            .NavigateTo<ModeSelectViewModel>());
         public Command BluetoothCommand => new Command(async () => await
             NavService.NavigateTo<BluetoothViewModel>());
     }

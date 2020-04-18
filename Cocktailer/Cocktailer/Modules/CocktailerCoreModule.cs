@@ -12,6 +12,7 @@ namespace Cocktailer.Modules
         public override void Load()
         {
             IAlertMessageService alertMessageService = new AlertMessageService();
+            ILogService logService = new LogService();
             Bind<MainViewModel>().ToSelf();
             Bind<DrinkList>().ToSelf().InSingletonScope();
 
@@ -34,6 +35,7 @@ namespace Cocktailer.Modules
             Bind<SelectConfigurationViewModel>().ToSelf();
 
             Bind<IAlertMessageService>().ToMethod(x => alertMessageService).InSingletonScope();
+            Bind<ILogService>().ToMethod(x => logService).InSingletonScope();
         }
         
 

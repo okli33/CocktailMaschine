@@ -1,13 +1,10 @@
 ﻿using Android.App;
 using Android.Bluetooth;
-using Android.Content;
-using Android.Net;
 using Android.OS;
-using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -72,26 +69,35 @@ namespace Cocktailer.Droid.Services
             {
                 throw new Exception(ex.Message);
             }
+            int counter = 10000;
+            var sw = Stopwatch.StartNew();
             while (!InputStream.IsDataAvailable())
             {
-                continue;
+                System.Threading.Thread.Sleep(5);
+                counter--;
+                if (counter == 0)
+                {
+                    sw.Stop();
+                    System.Diagnostics.Debug.WriteLine(sw.ElapsedMilliseconds);
+                    throw new TimeoutException();
+                }
             }
-            //try
-            //{
-            //byte[] buffer = new byte[16 * 1024];
-            //using (MemoryStream ms = new MemoryStream())
-            //{
-            //int read = InputStream.Read(buffer, 0, buffer.Length);
-            //{
-            //ms.Write(buffer, Convert.ToInt32(ms.Length), read);
-            //}
-            //return Encoding.ASCII.GetString(ms.ToArray());
-            //}
-            //}
-            //catch (Java.IO.IOException ex)
-            //{
-            //throw new Exception(ex.Message);
-            //}
+            try
+            {
+                byte[] buffer = new byte[16 * 1024];
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    int read = InputStream.Read(buffer, 0, buffer.Length);
+                    {
+                        ms.Write(buffer, Convert.ToInt32(ms.Length), read);
+                    }
+                    return Encoding.ASCII.GetString(ms.ToArray());
+                }
+            }
+            catch (Java.IO.IOException ex)
+            {
+                throw new Exception(ex.Message);
+            }
             return "";
         }
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.Pipes;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -39,12 +40,15 @@ namespace Cocktailer.ViewModels
         IBluetoothCommunicationService btService;
         IAlertMessageService alertService;
         ConfigurationEntry Config;
+        ILogService logService;
         public CocktailModeViewModel(INavService navService, IMemoryService memService,
-            IBluetoothCommunicationService btService, IAlertMessageService alertService) : base(navService)
+            IBluetoothCommunicationService btService, IAlertMessageService alertService,
+            ILogService logService) : base(navService)
         {
             this.memService = memService;
             this.btService = btService;
             this.alertService = alertService;
+            this.logService = logService;
         }
         public void CloseBluetoothConnection()
         {
@@ -125,6 +129,12 @@ namespace Cocktailer.ViewModels
         private async Task SendRecipe()
         {
             IsBusy = true;
+            if (SelectedEntry == null)
+            {
+                await alertService.ShowErrorMessage("Wähle zuerst einen Cocktail aus du Dunkop");
+                return;
+            }
+                
             try
             {
                 await alertService.ShowAlertMessage("Cocktail kann zubereitet werden. \n\nBitte den Knopf betätigen");
@@ -138,14 +148,16 @@ namespace Cocktailer.ViewModels
                     await alertService.ShowErrorMessage(ex.Message + "\n\nVorgang wird abgebrochen");
                     return;
                 }
-                finally
-                {
-                    SelectedEntry = null;
-                }
                 string answer = "";
                 try
                 {
                     answer = await btService.Write(recipe);
+                }
+                catch (TimeoutException)
+                {
+                    await alertService
+                        .ShowErrorMessage("Timeout!\n\nDrücke beim nächsten Mal den Knopf schneller");
+                    return;
                 }
                 catch (Exception)
                 {
@@ -154,7 +166,7 @@ namespace Cocktailer.ViewModels
                 }
                 finally
                 {
-                    SelectedEntry = null;
+                    
                 }
                 if (answer == "0" || answer == "1")
                 {
@@ -175,10 +187,14 @@ namespace Cocktailer.ViewModels
                     await alertService.ShowAlertMessage("Keine Antwort empfangen, überprüfe ob alles"
                         + " richtig geklappt hat");
                 }
+                await logService.AddToLogFile(new LogEntry()
+                { Cocktail = SelectedEntry, Date = DateTime.Now });
+                
             }
             catch { }
             finally
             {
+                SelectedEntry = null;
                 IsBusy = false;
             }
         }

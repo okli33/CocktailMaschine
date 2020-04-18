@@ -20,8 +20,8 @@ namespace Cocktailer.Services
             IFolder folder = null;
             List<T> availableObjects = new List<T>();
             try
-            {                folder = await subFolder<T>();
-
+            {                
+                folder = await subFolder<T>();
             }
             catch (Exception ex)
             {
@@ -54,7 +54,8 @@ namespace Cocktailer.Services
 
         public async Task<bool> Delete<T>(string name) where T : IEntry
         {
-            string fileName = name + ".json";
+            string fileName = name.EndsWith(".json") || name.EndsWith(".txt") ? 
+                name :  name + ".json";
             var folder = await subFolder<T>();
             try
             {
