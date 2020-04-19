@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.DrinkDetailPage"
+             Title="Getränk">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Bearbeiten" Command="{Binding EditCommand}" CommandParameter="{Binding Entry}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Text="Marke" FontSize="Medium" VerticalTextAlignment="Center"/>
+            <Label x:Name="brand" Grid.Column="1" Grid.Row="0" Text="{Binding Entry.Brand}" FontAttributes="Bold" FontSize="Large" VerticalTextAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="1" Text="Getränk" FontSize="Medium" VerticalTextAlignment="Center" />
+            <Label x:Name="name" Grid.Column="1" Grid.Row="1" Text="{Binding Entry.Name}" FontAttributes="Bold" FontSize="Large" VerticalTextAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="2" Text="Alkoholgehalt" FontSize="Medium" VerticalTextAlignment="Center"/>
+            <Label x:Name="percentage" Grid.Column="1" Grid.Row="2" Text="{Binding Entry.Percentage, StringFormat='{0}%'}" FontAttributes="Bold" FontSize="Large" VerticalTextAlignment="Center"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

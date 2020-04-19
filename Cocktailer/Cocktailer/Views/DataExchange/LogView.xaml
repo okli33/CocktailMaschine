@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels.DataExchange"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.DataExchange.LogView"
+             Title="Log Archiv">
+    <ContentPage.Content>
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+            <CollectionView ItemsSource="{Binding LogFiles}" SelectionMode="None" x:Name="collectionView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.LeftItems Mode="Execute">
+                                <SwipeItems>
+                                    <SwipeItem Text="Share" 
+                                               Command="{Binding Source={x:Reference collectionView}, 
+                                               Path=BindingContext.ShareCommand}"
+                                               CommandParameter="{Binding}"
+                                               BackgroundColor="LightBlue"
+                                               IconImageSource="share.png"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <SwipeView.RightItems Mode="Execute">
+                                <SwipeItems>
+                                    <SwipeItem Text="Löschen"
+                                               Command="{Binding Source={x:Reference collectionView}, 
+                                               Path=BindingContext.DeleteSingleCommand}"
+                                               CommandParameter="{Binding}"
+                                               BackgroundColor="PaleVioletRed"
+                                               IconImageSource="trash.png"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Grid Padding="15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding Name}" FontSize="Large"
+                                FontAttributes="Bold"  Grid.Column="1" Padding="5"
+                                VerticalTextAlignment="Center"/>
+                            </Grid>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

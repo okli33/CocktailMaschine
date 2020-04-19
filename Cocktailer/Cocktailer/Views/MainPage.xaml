@@ -1,27 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
-            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            mc:Ignorable="d"
-            xmlns:views="clr-namespace:Cocktailer.Views"
-            x:Class="Cocktailer.Views.MainPage">
-
-    <MasterDetailPage.Master>
-        <views:CocktailsPage/>
-    </MasterDetailPage.Master>
-
-    <MasterDetailPage.Detail>
-        <NavigationPage>
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_feed.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
-            <x:Arguments>
-                <views:ItemsPage />
-            </x:Arguments>
-        </NavigationPage>
-    </MasterDetailPage.Detail>
-    
-</MasterDetailPage>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.MainPage"
+             Title=" CocktailApp">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Suff" Command="{Binding SuffCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout x:Name="menu" VerticalOptions="CenterAndExpand" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Text="Rezepte" Command="{Binding RecipesCommand}"/>
+                <Button Grid.Row="1"  Text="Getränke" Command="{Binding DrinksCommand}"/>
+                <Button Grid.Row="2" Text="Konfigurationen" Command="{Binding ConfigurationsCommand}"/>
+                <Button Grid.Row="3" Text="Datenaustausch" Command="{Binding SelectModeCommand}"/>
+                <Label Grid.Row="4" Text="Impressum" HorizontalOptions="Center" VerticalOptions="End"/>
+                <Label  Grid.Row="5" HorizontalTextAlignment="Center" Text="Icons made by DinosoftLabs hwww.flaticon.com/authors/dinosoftlabs from www.flaticon.com" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

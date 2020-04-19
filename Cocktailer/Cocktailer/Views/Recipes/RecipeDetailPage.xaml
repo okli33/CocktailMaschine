@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.Recipes.RecipeDetailPage"
+             Title="Rezept">
+    <ContentPage.Resources>
+        <converters:DoubleStringConverter x:Key="DoubleStringConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Bearbeiten" Command="{Binding EditCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Text="{Binding Name}" FontSize="Large" FontAttributes="Bold" Grid.Column="0"/>
+                <Label Text="{Binding Percentage, Converter={StaticResource DoubleStringConverter}, StringFormat='({0}%)'}"
+                       Grid.Column="1" FontSize="Large"/>
+            </Grid>
+            <CollectionView ItemsSource="{Binding Ingredients}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Drink}" Grid.Column="0" FontSize="Medium"/>
+                            <Label Text="{Binding Amount, StringFormat='{0} ml'}" Grid.Column="1" FontSize="Medium"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

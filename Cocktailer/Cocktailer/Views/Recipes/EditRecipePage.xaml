@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:Cocktailer.Converters"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels.Recipes"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.Recipes.EditRecipePage"
+             Title="Bearbeiten">
+    <ContentPage.Resources>
+        <converters:DoubleStringConverter x:Key="DoubleStringConverter"/>
+        <converters:IntToStringConverter x:Key="IntStringConverter"/>
+        <converters:DrinkStringConverter x:Key="DrinkStringConverter"/>
+        <converters:DrinkIndexConverter x:Key="DrinkIndexConverter" />
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Speichern" Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Entry Placeholder="Name" Text="{Binding Name}" FontSize="Large" FontAttributes="Bold"
+                       Grid.Column="0"/>
+                <Label Text="{Binding Percentage, Converter={StaticResource DoubleStringConverter},
+                    StringFormat='({0}%)'}" Grid.Column="1" FontSize="Large" VerticalOptions="Center"/>
+            </Grid>            
+            <CollectionView ItemsSource="{Binding Ingredients}">
+                <CollectionView.ItemTemplate >
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Picker ItemsSource="{x:Static vm:EditRecipeViewModel.AvailableDrinks}"
+                                    Title="Getränk wählen"
+                                    SelectedIndex="{Binding Drink, Converter={StaticResource DrinkIndexConverter} }"
+                                    
+                                    Grid.Row="0"/>
+                            <Grid Grid.Row="1" Padding="10,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="3*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="Menge in ml:" VerticalOptions="Center" FontSize="Medium"/>
+                                <Entry Text="{Binding Amount, Converter={StaticResource IntStringConverter}}"
+                                   Keyboard="Numeric" Grid.Column="1">
+                                </Entry>                                
+                            </Grid>                            
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Zutat hinzufügen" Command="{Binding AddIngredientCommand}"/>
+            <Button Text="Letzte Zutat entfernen" Command="{Binding DeleteLastIngredientCommand}"/>
+            <Button Text="Rezept löschen" Command="{Binding DeleteCommand}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

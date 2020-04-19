@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
+             mc:Ignorable="d"
+             x:Class="Cocktailer.Views.NewDrinkPage"
+             Title="Getränk hinzufügen">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ReverseBooleanConverter x:Key="ReverseBooleanConverter"/>
+            <converters:FloatConverter x:Key="FloatConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Speichern" Command="{Binding SaveDrink}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <TableView Intent="Form" IsVisible="{Binding IsBusy, Converter={StaticResource
+            ReverseBooleanConverter}}">
+                <TableView.Root>
+                    <TableSection>
+                        <EntryCell Label="Marke" Text="{Binding Brand}"/>
+                        <EntryCell x:Name="name"  Label="Getränkeart" Text="{Binding Name}"/>
+                        <EntryCell x:Name="percentage" Label="Alkoholgehalt in %" 
+                                   Text="{Binding Percentage}" Keyboard="Numeric"/>
+                    </TableSection>
+                </TableView.Root>
+            </TableView>
+            <StackLayout Orientation="Vertical" VerticalOptions="Center"
+                     HorizontalOptions="Center" IsVisible="{Binding IsBusy}">
+                <ActivityIndicator IsRunning="True"/>
+                <Label Text="Neuen Drink speichern"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
