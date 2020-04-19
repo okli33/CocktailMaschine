@@ -43,7 +43,7 @@ namespace Cocktailer.ViewModels.DataExchange
         IMemoryService memService;
         IAlertMessageService alertService;
         public LogViewModel(INavService navService, ILogService logService,
-            IMemoryService memService, IAlertMessageService alertService): base(navService)
+            IMemoryService memService, IAlertMessageService alertService) : base(navService)
         {
             this.logService = logService;
             this.memService = memService;
@@ -65,7 +65,7 @@ namespace Cocktailer.ViewModels.DataExchange
         private bool CanDelete() => SelectedItems != null && SelectedItems.Count > 0 && !HasErrors;
         private async Task DeleteSelected()
         {
-            foreach(var file in SelectedItems)
+            foreach (var file in SelectedItems)
             {
                 if (!await memService.Delete<LogEntry>(file.Name))
                 {
@@ -75,8 +75,19 @@ namespace Cocktailer.ViewModels.DataExchange
             Init();
         }
 
+        public Command DeleteSingleCommand => new Command(async (value) => await 
+            DeleteSingle((FileEntry)value));
+        private async Task DeleteSingle(FileEntry entry)
+        {
+            if (!await memService.Delete<LogEntry>(entry.Name))
+            {
+                await alertService.ShowErrorMessage($"Fehler beim Löschen von {entry.Name}");
+            }
+            Init();
+        }
+
         public Command RefreshCommand => new Command(() => Init());
-        public Command ChangeSelectedCommand => new Command((value) => 
+        public Command ChangeSelectedCommand => new Command((value) =>
             ChangeSelected((FileEntry)value));
         private void ChangeSelected(FileEntry entry)
         {
@@ -91,15 +102,14 @@ namespace Cocktailer.ViewModels.DataExchange
             else
                 sel.Remove(sel.First(x => x.Name == entry.Name));
             SelectedItems = sel;
-            
+
         }
 
-        public Command ShareCommand => new Command(async () => await Share());
+        public Command ShareCommand => new Command(async (value) => await Share((FileEntry)value));
 
-        private async Task Share()
+        private async Task Share(FileEntry file)
         {
-            
-            
+            await logService.ShareLogFile(file.File);
         }
     }
 }

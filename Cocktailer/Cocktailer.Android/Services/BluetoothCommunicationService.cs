@@ -70,17 +70,13 @@ namespace Cocktailer.Droid.Services
                 throw new Exception(ex.Message);
             }
             int counter = 10000;
-            var sw = Stopwatch.StartNew();
+           
             while (!InputStream.IsDataAvailable())
             {
                 System.Threading.Thread.Sleep(5);
                 counter--;
-                if (counter == 0)
-                {
-                    sw.Stop();
-                    System.Diagnostics.Debug.WriteLine(sw.ElapsedMilliseconds);
-                    throw new TimeoutException();
-                }
+                if (counter == 0)                
+                    throw new TimeoutException();                
             }
             try
             {

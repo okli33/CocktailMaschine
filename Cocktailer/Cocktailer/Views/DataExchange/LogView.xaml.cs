@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cocktailer.ViewModels.DataExchange;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Cocktailer.Views.DataExchange
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LogView : ContentPage
     {
+        LogViewModel ViewModel => BindingContext as LogViewModel;
         public LogView()
         {
             InitializeComponent();

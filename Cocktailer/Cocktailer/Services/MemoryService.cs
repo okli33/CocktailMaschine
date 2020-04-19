@@ -13,7 +13,7 @@ namespace Cocktailer.Services
     {
         async Task<IFolder> appFolder() => await FileSystem.Current.LocalStorage
             .CreateFolderAsync("CocktailMachine", CreationCollisionOption.OpenIfExists);
-        async Task<IFolder> subFolder<T>() => await (await appFolder()).CreateFolderAsync(typeof(T).Name,
+        public async Task<IFolder> SubFolder<T>() => await (await appFolder()).CreateFolderAsync(typeof(T).Name,
                 CreationCollisionOption.OpenIfExists);
         public async Task<List<T>> GetAvailable<T>() where T : IEntry
         {
@@ -21,7 +21,7 @@ namespace Cocktailer.Services
             List<T> availableObjects = new List<T>();
             try
             {                
-                folder = await subFolder<T>();
+                folder = await SubFolder<T>();
             }
             catch (Exception ex)
             {
@@ -38,7 +38,7 @@ namespace Cocktailer.Services
         public async Task<T> Load<T>(string fileName) where T : IEntry
         {
             fileName = fileName.EndsWith(".json") ? fileName : fileName + ".json";
-            IFolder folder = await subFolder<T>();
+            IFolder folder = await SubFolder<T>();
             var fileText = await (await folder.GetFileAsync(fileName)
                 ).ReadAllTextAsync();
             return JsonConvert.DeserializeObject<T>(fileText);
@@ -47,7 +47,7 @@ namespace Cocktailer.Services
         public async Task Save<T>(T obj, string name) where T : IEntry
         {
             var text = JsonConvert.SerializeObject(obj);
-            var folder = await subFolder<T>();
+            var folder = await SubFolder<T>();
             var file = await folder.CreateFileAsync(name + ".json", CreationCollisionOption.ReplaceExisting);
             await file.WriteAllTextAsync(text);
         }
@@ -56,7 +56,7 @@ namespace Cocktailer.Services
         {
             string fileName = name.EndsWith(".json") || name.EndsWith(".txt") ? 
                 name :  name + ".json";
-            var folder = await subFolder<T>();
+            var folder = await SubFolder<T>();
             try
             {
                 await (await folder.GetFileAsync(fileName)).DeleteAsync();

@@ -168,6 +168,8 @@ namespace Cocktailer.ViewModels
                 {
                     
                 }
+                await logService.AddToLogFile(new LogEntry()
+                { Cocktail = SelectedEntry, Date = DateTime.Now });
                 if (answer == "0" || answer == "1")
                 {
                     await alertService.ShowSuccessMessage("Cocktail erfolgreich zubereitet");
@@ -187,8 +189,6 @@ namespace Cocktailer.ViewModels
                     await alertService.ShowAlertMessage("Keine Antwort empfangen, überprüfe ob alles"
                         + " richtig geklappt hat");
                 }
-                await logService.AddToLogFile(new LogEntry()
-                { Cocktail = SelectedEntry, Date = DateTime.Now });
                 
             }
             catch { }

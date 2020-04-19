@@ -13,6 +13,7 @@ namespace Cocktailer.Modules
         {
             IAlertMessageService alertMessageService = new AlertMessageService();
             ILogService logService = new LogService();
+            IDataExchangeService dataService = new DataExchangeService();
             Bind<MainViewModel>().ToSelf();
             Bind<DrinkList>().ToSelf().InSingletonScope();
 
@@ -36,6 +37,7 @@ namespace Cocktailer.Modules
 
             Bind<IAlertMessageService>().ToMethod(x => alertMessageService).InSingletonScope();
             Bind<ILogService>().ToMethod(x => logService).InSingletonScope();
+            Bind<IDataExchangeService>().ToMethod(x => dataService).InSingletonScope();
         }
         
 
