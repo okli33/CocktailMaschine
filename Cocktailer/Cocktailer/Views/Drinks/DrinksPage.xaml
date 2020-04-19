@@ -12,9 +12,21 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <RefreshView IsRefreshing="{Binding IsBusy, Mode=OneWay}" Command="{Binding RefreshCommand}">
-            <CollectionView SelectionMode="Single" ItemsSource="{Binding DrinkEntries}">
+            <CollectionView SelectionMode="Single" ItemsSource="{Binding DrinkEntries}"
+                            x:Name="collectionView">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Löschen" 
+                                           Command="{Binding Source={x:Reference collectionView}, 
+                                           Path=BindingContext.DeleteSingleCommand}"
+                                           CommandParameter="{Binding}"
+                                           BackgroundColor="PaleVioletRed"
+                                           IconImageSource="trash.png"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
                         <Grid Padding="20">
                             <Grid.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding 
@@ -37,6 +49,7 @@
                                 <Label FontSize="Large" Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" />
                             </Grid>
                         </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

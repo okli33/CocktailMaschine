@@ -13,7 +13,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <SwipeView>
-                            <SwipeView.LeftItems>
+                            <SwipeView.LeftItems Mode="Execute">
                                 <SwipeItems>
                                     <SwipeItem Text="Share" 
                                                Command="{Binding Source={x:Reference collectionView}, 
@@ -23,7 +23,7 @@
                                                IconImageSource="share.png"/>
                                 </SwipeItems>
                             </SwipeView.LeftItems>
-                            <SwipeView.RightItems>
+                            <SwipeView.RightItems Mode="Execute">
                                 <SwipeItems>
                                     <SwipeItem Text="Löschen"
                                                Command="{Binding Source={x:Reference collectionView}, 

@@ -12,23 +12,35 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <RefreshView IsRefreshing="{Binding IsBusy, Mode=OneWay}" Command="{Binding RefreshCommand}">
-            <CollectionView ItemsSource="{Binding ConfigurationEntries}" SelectionMode="Single">
+            <CollectionView x:Name="collectionView"
+                ItemsSource="{Binding ConfigurationEntries}" 
+                            SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="10">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding
+                        <SwipeView>
+                            <SwipeView.RightItems Mode="Execute">
+                                <SwipeItem Text="Löschen" 
+                                           Command="{Binding Source={x:Reference collectionView}, 
+                                           Path=BindingContext.DeleteSingleCommand}"
+                                           CommandParameter="{Binding}"
+                                           BackgroundColor="PaleVioletRed"
+                                           IconImageSource="trash.png"/> 
+                            </SwipeView.RightItems>
+                            <Grid Padding="10">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding
                                 Source={RelativeSource AncestorType={x:Type vm:ConfigurationsViewModel}},
                                 Path=ViewCommand}"
                                 CommandParameter="{Binding}" />
-                            </Grid.GestureRecognizers>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" FontSize="Large"/>
-                            <Label Grid.Row="1" Text="{Binding DrinkString}" FontSize="Medium"/>
-                        </Grid>
+                                </Grid.GestureRecognizers>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Text="{Binding Name}" FontAttributes="Bold" FontSize="Large"/>
+                                <Label Grid.Row="1" Text="{Binding DrinkString}" FontSize="Medium"/>
+                            </Grid>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

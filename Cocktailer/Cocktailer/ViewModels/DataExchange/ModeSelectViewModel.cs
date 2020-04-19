@@ -54,6 +54,7 @@ namespace Cocktailer.ViewModels.DataExchange
             try
             {
                 await exchangeService.Import();
+                await alertService.ShowSuccessMessage("Daten erfolgreich importiert");
             }
             catch { await alertService.ShowDataErrorMessage(); }
         }

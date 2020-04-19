@@ -18,9 +18,12 @@ namespace Cocktailer.ViewModels.Recipes
             }
         }
         IMemoryService memService;
-        public RecipesViewModel(INavService navService, IMemoryService mem) : base(navService)
+        IAlertMessageService alertService;
+        public RecipesViewModel(INavService navService, IMemoryService mem,
+            IAlertMessageService alertService) : base(navService)
         {
             memService = mem;
+            this.alertService = alertService;
         }
 
         public override async void Init()
@@ -54,5 +57,16 @@ namespace Cocktailer.ViewModels.Recipes
 
         public Command NewCommand => new Command(async () =>
            await NavService.NavigateTo<NewRecipeViewModel>());
+
+        public Command DeleteSingleCommand => new Command(async (value) => await
+            DeleteSingle((RecipeEntry)value));
+        private async Task DeleteSingle(RecipeEntry entry)
+        {
+            if (!await memService.Delete<RecipeEntry>(entry.Name))
+            {
+                await alertService.ShowErrorMessage($"Fehler beim Löschen von {entry.Name}");
+            }
+            await LoadRecipes();
+        }
     }
 }

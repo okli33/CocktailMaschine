@@ -1,6 +1,7 @@
 ﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Cocktailer.ViewModels
@@ -57,5 +58,16 @@ namespace Cocktailer.ViewModels
 
         Command refreshCommand;
         public Command RefreshCommand => refreshCommand ?? (refreshCommand = new Command(LoadDrinks));
+
+        public Command DeleteSingleCommand => new Command(async (value) => await
+            DeleteSingle((DrinkEntry)value));
+        private async Task DeleteSingle(DrinkEntry entry)
+        {
+            if (!await MemService.Delete<DrinkEntry>($"{entry.Brand}-{entry.Name}-{entry.Percentage}"))
+            {
+                await alertService.ShowErrorMessage($"Fehler beim Löschen von {entry.Name}");
+            }
+            LoadDrinks();
+        }
     }
 }

@@ -78,5 +78,16 @@ namespace Cocktailer.ViewModels.Configurations
         public Command NewCommand => new Command(async () => await NavService.NavigateTo<NewConfigurationViewModel>());
 
         public Command RefreshCommand => new Command(async () => await LoadConfigs());
+
+        public Command DeleteSingleCommand => new Command(async (value) => await
+            DeleteSingle((ConfigurationEntry)value));
+        private async Task DeleteSingle(ConfigurationEntry entry)
+        {
+            if (!await memoryService.Delete<ConfigurationEntry>(entry.Name))
+            {
+                await alertService.ShowErrorMessage($"Fehler beim Löschen von {entry.Name}");
+            }
+            Init();
+        }
     }
 }
