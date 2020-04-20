@@ -1,6 +1,7 @@
 ﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -36,8 +37,10 @@ namespace Cocktailer.ViewModels.Recipes
             IsBusy = true;
             try
             {
+                
                 RecipeEntries = new ObservableCollection<RecipeEntry>(
                     await memService.GetAvailable<RecipeEntry>());
+                
             }
             catch
             {

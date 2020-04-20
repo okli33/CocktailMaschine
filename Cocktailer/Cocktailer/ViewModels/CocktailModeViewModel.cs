@@ -1,4 +1,5 @@
-﻿using Cocktailer.Models.Entries;
+﻿using Cocktailer.Exceptions;
+using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 using Microsoft.Runtime.CompilerServices;
 using System;
@@ -72,6 +73,14 @@ namespace Cocktailer.ViewModels
             }
 
             RecipeEntries = await CompareConfigurationToRecipes();
+            if (RecipeEntries.Count == 0)
+            {
+                await alertService.ShowAlertMessage("Keine verfügbaren Cocktails gefunden");
+            }
+            else
+            {
+                SelectedEntry = RecipeEntries[0];
+            }
             IsBusy = false;
         }
 
@@ -86,12 +95,13 @@ namespace Cocktailer.ViewModels
                 {
                     recipes = await memService.GetAvailable<RecipeEntry>();
                 }
-                catch 
+                catch
                 {
                     counter++;
                 }
             }
-            var configurationDrinks = Config.Spots.Select(x => x.Drink).ToList();
+            var configurationDrinks = Config.Spots.Where(x => x.Drink != null)
+                .Select(x => x.Drink).ToList();
             foreach (var recipe in recipes)
             {
                 var possible = true;
@@ -99,21 +109,21 @@ namespace Cocktailer.ViewModels
                 {
                     try
                     {
-                        if (!configurationDrinks.Where(x => x.Brand == ingredient.Brand
+                        if (!configurationDrinks.Where(x => (x.Brand == "" || x.Brand == ingredient.Brand)
                             && x.Name == ingredient.Name).Any())
                         {
                             possible = false;
                             break;
                         }
                     }
-                    catch
+                    catch (Exception)
                     {
                         await alertService.ShowErrorMessage("Es ist ein Fehler"
                             + " mit der Konfiguration aufgetreten."
                             + "\n\n Du wirst zurück ins Haupmenü geleitet.");
                         await NavService.NavigateTo<MainViewModel>();
                         NavService.ClearBackStack();
-                        return null;
+                        return new ObservableCollection<RecipeEntry>();
                     }
                 }
                 if (possible)
@@ -134,10 +144,9 @@ namespace Cocktailer.ViewModels
                 await alertService.ShowErrorMessage("Wähle zuerst einen Cocktail aus du Dunkop");
                 return;
             }
-                
+
             try
             {
-                await alertService.ShowAlertMessage("Cocktail kann zubereitet werden. \n\nBitte den Knopf betätigen");
                 string recipe = "";
                 try
                 {
@@ -155,8 +164,22 @@ namespace Cocktailer.ViewModels
                 }
                 catch (TimeoutException)
                 {
-                    await alertService
-                        .ShowErrorMessage("Timeout!\n\nDrücke beim nächsten Mal den Knopf schneller");
+                    //await alertService
+                    //    .ShowErrorMessage("Timeout!\n\nDrücke beim nächsten Mal den Knopf schneller");
+                    return;
+                }
+                catch (SendMessageException)
+                {
+                    await alertService.ShowAlertMessage("Fehler beim übertragen der Daten\n\nVorgang wird abgebrochen");
+                    Init();
+                    return;
+                }
+                catch (ReceiveMessageException)
+                {
+                    await alertService.ShowAlertMessage("Keine Antwort empfangen, überprüfe ob alles"
+                            + " richtig geklappt hat");
+                    await logService.AddToLogFile(new LogEntry()
+                    { Cocktail = SelectedEntry, Date = DateTime.Now });
                     return;
                 }
                 catch (Exception)
@@ -164,20 +187,13 @@ namespace Cocktailer.ViewModels
                     await alertService.ShowAlertMessage("Fehler beim übertragen der Daten\n\nVorgang wird abgebrochen");
                     return;
                 }
-                finally
-                {
-                    
-                }
                 await logService.AddToLogFile(new LogEntry()
-                { Cocktail = SelectedEntry, Date = DateTime.Now });
-                if (answer == "0" || answer == "1")
-                {
-                    await alertService.ShowSuccessMessage("Cocktail erfolgreich zubereitet");
+                    { Cocktail = SelectedEntry, Date = DateTime.Now });
+                if (answer == "1")
                     return;
-                }
-                else if (answer.StartsWith("0") || answer.StartsWith("1"))
+                else if (answer.StartsWith("0"))
                 {
-                    var pos = answer.Substring(1).Replace("\r\n", "");
+                    var pos = answer.Substring(1).Replace("&", "");
                     var DrinkPos = SpotConversions.FirstOrDefault(x => x.Value == pos).Key;
                     var emptyDrink = Config.Spots.FirstOrDefault(x => x.X.ToString() + x.Y.ToString() == DrinkPos);
                     await alertService.ShowErrorMessage("Folgendes Getränk ist leer und sollte ausgetauscht werden:"
@@ -189,12 +205,11 @@ namespace Cocktailer.ViewModels
                     await alertService.ShowAlertMessage("Keine Antwort empfangen, überprüfe ob alles"
                         + " richtig geklappt hat");
                 }
-                
+
             }
             catch { }
             finally
             {
-                SelectedEntry = null;
                 IsBusy = false;
             }
         }
@@ -202,13 +217,13 @@ namespace Cocktailer.ViewModels
         private string ConvertRecipeToSendString()
         {
             string sendString = "&";
-            foreach(var ingredient in SelectedEntry.Ingredients)
+            foreach (var ingredient in SelectedEntry.Ingredients)
             {
                 var spot = Config.Spots
                     .Where(x => x.Drink.Brand == ingredient.Drink.Brand
                     && x.Drink.Name == ingredient.Drink.Name).FirstOrDefault();
                 sendString += SpotConversions[spot.X.ToString() + spot.Y.ToString()]
-                    + ":" + ingredient.Amount.ToString() + "&"; 
+                    + ":" + ingredient.Amount.ToString() + "&";
             }
             return sendString;
         }

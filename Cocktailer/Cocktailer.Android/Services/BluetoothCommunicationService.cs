@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Bluetooth;
 using Android.OS;
+using Cocktailer.Exceptions;
 using Cocktailer.Services;
 
 using System;
@@ -67,7 +68,7 @@ namespace Cocktailer.Droid.Services
             }
             catch (Java.IO.IOException ex)
             {
-                throw new Exception(ex.Message);
+                throw new SendMessageException(ex.Message);
             }
             int counter = 10000;
            
@@ -85,16 +86,15 @@ namespace Cocktailer.Droid.Services
                 {
                     int read = InputStream.Read(buffer, 0, buffer.Length);
                     {
-                        ms.Write(buffer, Convert.ToInt32(ms.Length), read);
+                        ms.Write(buffer, 0, read);
                     }
                     return Encoding.ASCII.GetString(ms.ToArray());
                 }
             }
             catch (Java.IO.IOException ex)
             {
-                throw new Exception(ex.Message);
+                throw new ReceiveMessageException(ex.Message);
             }
-            return "";
         }
 
         public async Task<byte[]> Read()

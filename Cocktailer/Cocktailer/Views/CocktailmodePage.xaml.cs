@@ -13,10 +13,16 @@ namespace Cocktailer.Views
         {
             InitializeComponent();
         }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            MessagingCenter.Send(this, "setLandscapeMode");
+        }
 
         protected override void OnDisappearing()
         {
             ViewModel.CloseBluetoothConnection();
+            MessagingCenter.Send(this, "setPortraitMode");
             base.OnDisappearing();
         }
     }

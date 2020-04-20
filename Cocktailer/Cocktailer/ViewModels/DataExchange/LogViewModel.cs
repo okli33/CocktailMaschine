@@ -54,8 +54,12 @@ namespace Cocktailer.ViewModels.DataExchange
         {
             SelectedItems = new List<FileEntry>();
             IsBusy = true;
-            LogFiles = new ObservableCollection<FileEntry>((await logService.GetLogFiles())
-                .Select(x => new FileEntry() { Name = x.Name, File = x, Selected = false }));
+            try
+            {
+                LogFiles = new ObservableCollection<FileEntry>((await logService.GetLogFiles())
+                    .Select(x => new FileEntry() { Name = x.Name, File = x, Selected = false }));
+            }
+            catch { }
             IsBusy = false;
         }
 
