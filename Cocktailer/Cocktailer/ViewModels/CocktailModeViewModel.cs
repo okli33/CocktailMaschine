@@ -60,10 +60,10 @@ namespace Cocktailer.ViewModels
             Config = config;
             try
             {
-                //if (!await btService.Init())
-                //{
-                //    throw new Exception();
-                //}
+                if (!await btService.Init())
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception)
             {
