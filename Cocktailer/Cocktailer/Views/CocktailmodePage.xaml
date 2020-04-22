@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:vm="clr-namespace:Cocktailer.ViewModels"
+             NavigationPage.HasNavigationBar="False"
              xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
              x:Class="Cocktailer.Views.CocktailmodePage"
              Title="Cocktails">
@@ -15,51 +16,32 @@
         <StackLayout>
             <CarouselView ItemsSource="{Binding RecipeEntries}" CurrentItem="{Binding SelectedEntry}"
                           x:Name="TheCarousel" IndicatorView="indicatorView">
+                <CarouselView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding 
+                                Source={RelativeSource AncestorType={x:Type vm:CocktailModeViewModel}},
+                                Path=SendRecipeCommand}"/>
+                </CarouselView.GestureRecognizers>
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding 
+                                Source={RelativeSource AncestorType={x:Type vm:CocktailModeViewModel}},
+                                Path=SendRecipeCommand}"/>
+                            </StackLayout.GestureRecognizers>
                             <Frame BorderColor="DarkGray" HasShadow="True"
                                     Margin="20" CornerRadius="10"  
-                                       HeightRequest="185">
+                                       HeightRequest="225" >
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding 
                                 Source={RelativeSource AncestorType={x:Type vm:CocktailModeViewModel}},
                                 Path=SendRecipeCommand}"/>
                                 </Frame.GestureRecognizers>
-                                <Grid Padding="10,0,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Label Text="{Binding Percentage, StringFormat='({0}%)'}" 
-                                           Grid.Column="1" Grid.Row="0" FontSize="42" 
-                                           HorizontalTextAlignment="Center" />
-                                    <Label Grid.Column="0" Grid.Row="0" Text="{Binding Name}" FontSize="42"
+                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding NameString}" FontSize="42"
                                            FontAttributes="Bold"
-                                           HorizontalTextAlignment="Center"/>
-                                    <CollectionView ItemsSource="{Binding Ingredients}" 
-                                                    Grid.ColumnSpan="2" Grid.Row="1"
-                                                    HorizontalOptions="Center">
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Grid.Column="0" Text="{Binding Drink.Brand}" FontSize="22"/>
-                                                    <Label Grid.Column="1" Text="{Binding Drink.Name}" FontSize="22"/>
-                                                    <Label Grid.Column="2" Text="{Binding Amount, StringFormat='{0}ml'}" FontSize="22"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
-                                </Grid>
+                                           HorizontalTextAlignment="Center"
+                                           Grid.ColumnSpan="2"
+                                           VerticalTextAlignment="Center"/>
                             </Frame>
                         </StackLayout>
                     </DataTemplate>
@@ -67,10 +49,11 @@
             </CarouselView>
             <IndicatorView x:Name="indicatorView" 
                                MaximumVisible="5"
-                               Margin="0,0,0,10"
+                               Margin="0,0,0,20"
                                IndicatorColor="LightGray"
                                SelectedIndicatorColor="DarkGray"
-                               HorizontalOptions="Center"/>
+                               HorizontalOptions="Center"
+                           Scale="1.5"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

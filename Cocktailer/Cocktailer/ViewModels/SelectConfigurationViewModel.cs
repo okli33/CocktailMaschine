@@ -62,10 +62,10 @@ namespace Cocktailer.ViewModels
            
         private async Task NextPage()
         {
-            NavService.ClearBackStack();
+            
             await NavService.NavigateTo<CocktailModeViewModel, ConfigurationEntry>
                 (SelectedConfiguration);
-            NavService.ClearBackStack();
+            
         }
         private bool CanGoForward() => SelectedConfiguration != null && !HasErrors;
 

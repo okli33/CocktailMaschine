@@ -7,6 +7,10 @@ namespace Cocktailer.Models.Entries
     {
         public string Name { get; set; }
         public double Percentage { get; set; }
+        public string NameString
+        {
+            get => $"{Name} ({Percentage}%)";
+        }
         public List<Ingredient> Ingredients { get; set; }
         public override string ToString()
         {

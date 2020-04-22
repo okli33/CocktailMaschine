@@ -1,5 +1,6 @@
 ﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,7 +67,7 @@ namespace Cocktailer.ViewModels.Recipes
         {
             var totalAmount = Ingredients.Select(x => x.Amount).Sum();
             var totalAlcohol = Ingredients.Select(x => x.Drink.Percentage * x.Amount).Sum();
-            Percentage = totalAlcohol / totalAmount;
+            Percentage = Math.Round(totalAlcohol / totalAmount);
         }
         Command saveCommand;
         public Command SaveCommand =>saveCommand ?? 
