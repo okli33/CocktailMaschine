@@ -12,17 +12,20 @@ namespace Cocktailer.Services
 {
     public class LogService : ILogService
     {
+        private bool inUse = false;
         IFolder Logfolder;
         async Task<IFolder> appFolder() => await PCLStorage.FileSystem.Current.LocalStorage
             .CreateFolderAsync("CocktailMachine", CreationCollisionOption.OpenIfExists);
         async Task<IFolder> GetLogFolder()
         {
+
             if (Logfolder == null)
             {
                 Logfolder = await (await appFolder())
                     .CreateFolderAsync(typeof(LogEntry).Name, CreationCollisionOption.OpenIfExists);
             }
             return Logfolder;
+
         }
         async Task<IFile> GetLogFile(string fileName)
         {
@@ -31,31 +34,65 @@ namespace Cocktailer.Services
         }
         public async Task AddToLogFile(LogEntry entry)
         {
-            string fileName;
-            if (DateTime.Now.Hour > 10)
-                fileName = DateTime.Now.ToString("D") + ".txt";
-            else
+            try
             {
-                fileName = DateTime.Now.AddDays(-1).ToString("D") + ".txt";
+                if (!inUse)
+                {
+                    inUse = true;
+                    string fileName;
+                    if (DateTime.Now.Hour > 10)
+                        fileName = DateTime.Now.ToString("D") + ".txt";
+                    else
+                    {
+                        fileName = DateTime.Now.AddDays(-1).ToString("D") + ".txt";
+                    }
+                    var file = await GetLogFile(fileName);
+                    var text = await file.ReadAllTextAsync();
+                    text += entry.Name;
+                    await file.WriteAllTextAsync(text);
+                }
             }
-            var file = await GetLogFile(fileName);
-            var text = await file.ReadAllTextAsync();
-            text += entry.Name;
-            await file.WriteAllTextAsync(text);
+            finally
+            {
+                inUse = false;
+            }
         }
 
         public async Task ShareLogFile(IFile logFile)
         {
-            await Share.RequestAsync(new ShareFileRequest()
+            try
             {
-                File = new ShareFile(logFile.Path),
-                Title = logFile.Name
-            });
+                if (!inUse)
+                {
+                    inUse = true;
+                    await Share.RequestAsync(new ShareFileRequest()
+                    {
+                        File = new ShareFile(logFile.Path),
+                        Title = logFile.Name
+                    });
+                }                
+            }
+            finally
+            {
+                inUse = false;
+            }
         }
 
         public async Task<List<IFile>> GetLogFiles()
         {
-            return (await (await GetLogFolder()).GetFilesAsync()).ToList();
+            try
+            {
+                if (!inUse)
+                {
+                    inUse = true;
+                    return (await (await GetLogFolder()).GetFilesAsync()).ToList();
+                }
+                throw new Exception();
+            }
+            finally
+            {
+                inUse = false;
+            }
         }
     }
 }

@@ -13,6 +13,11 @@ namespace Cocktailer
         public IKernel Kernel { get; set; }
         public App(params INinjectModule[] platformModules)
         {
+            Device.SetFlags(new[] {
+                "CarouselView_Experimental",
+                "IndicatorView_Experimental",
+                "SwipeView_Experimental"
+            });
             InitializeComponent();
             Kernel = new StandardKernel();
             Kernel.Load(new CocktailerCoreModule());

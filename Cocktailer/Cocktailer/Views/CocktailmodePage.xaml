@@ -4,6 +4,8 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:vm="clr-namespace:Cocktailer.ViewModels"
+             NavigationPage.HasNavigationBar="False"
              xmlns:converters="clr-namespace:Cocktailer.Converters;assembly=Cocktailer"
              x:Class="Cocktailer.Views.CocktailmodePage"
              Title="Cocktails">
@@ -11,34 +13,47 @@
         <converters:IngredientsToDrinkstring x:Key="IngredientsToDrinkstring"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <AbsoluteLayout>
-            <CollectionView SelectionMode="Single" ItemsSource="{Binding RecipeEntries}"
-                            SelectedItem="{Binding SelectedEntry}">
-                <CollectionView.ItemTemplate>
+        <StackLayout>
+            <CarouselView ItemsSource="{Binding RecipeEntries}" CurrentItem="{Binding SelectedEntry}"
+                          x:Name="TheCarousel" IndicatorView="indicatorView">
+                <CarouselView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding 
+                                Source={RelativeSource AncestorType={x:Type vm:CocktailModeViewModel}},
+                                Path=SendRecipeCommand}"/>
+                </CarouselView.GestureRecognizers>
+                <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="10,20,0,50">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Label Grid.RowSpan="2" Text="{Binding Percentage}" Grid.Column="1" VerticalTextAlignment="Center" FontSize="Medium" />
-                            <Label Grid.Column="0" Text="{Binding Name}" FontSize="Large" FontAttributes="Bold"/>
-                            <Label Grid.Column="0" Grid.Row="1" Text="{Binding Ingredients, 
-                                Converter={StaticResource IngredientsToDrinkstring}}" FontSize="Medium"/>
-                        </Grid>
+                        <StackLayout>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding 
+                                Source={RelativeSource AncestorType={x:Type vm:CocktailModeViewModel}},
+                                Path=SendRecipeCommand}"/>
+                            </StackLayout.GestureRecognizers>
+                            <Frame BorderColor="DarkGray" HasShadow="True"
+                                    Margin="20" CornerRadius="10"  
+                                       HeightRequest="225" >
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding 
+                                Source={RelativeSource AncestorType={x:Type vm:CocktailModeViewModel}},
+                                Path=SendRecipeCommand}"/>
+                                </Frame.GestureRecognizers>
+                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding NameString}" FontSize="42"
+                                           FontAttributes="Bold"
+                                           HorizontalTextAlignment="Center"
+                                           Grid.ColumnSpan="2"
+                                           VerticalTextAlignment="Center"/>
+                            </Frame>
+                        </StackLayout>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <ImageButton Source="cocktail.png" 
-                BackgroundColor="Transparent"
-                AbsoluteLayout.LayoutFlags="PositionProportional"  
-                AbsoluteLayout.LayoutBounds=".95,.95,80,80" 
-                Command="{Binding SendRecipeCommand}"
-                />
-        </AbsoluteLayout>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+            <IndicatorView x:Name="indicatorView" 
+                               MaximumVisible="5"
+                               Margin="0,0,0,20"
+                               IndicatorColor="LightGray"
+                               SelectedIndicatorColor="DarkGray"
+                               HorizontalOptions="Center"
+                           Scale="1.5"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

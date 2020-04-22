@@ -62,6 +62,8 @@ namespace Cocktailer.ViewModels
 
         async Task Save()
         {
+            if (Brand == null)
+                Brand = "";
             var newItem = new DrinkEntry
             {
                 Brand = Brand,

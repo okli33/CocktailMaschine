@@ -128,7 +128,7 @@ namespace Cocktailer.ViewModels.Recipes
         {
             var totalAmount = Ingredients.ToList().Select(x => x.Amount).Sum();
             var alcAmount = Ingredients.ToList().Select(x => x.Drink?.Percentage * x.Amount).Sum();
-            Percentage = alcAmount.GetValueOrDefault() / totalAmount;
+            Percentage = Math.Round(alcAmount.GetValueOrDefault() / totalAmount);
         }
 
         private Command saveCommand;
