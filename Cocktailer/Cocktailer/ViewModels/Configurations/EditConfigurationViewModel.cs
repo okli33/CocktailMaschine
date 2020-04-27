@@ -92,9 +92,9 @@ namespace Cocktailer.ViewModels.Configurations
                 try
                 {
                     await memService.Save(Entry, Entry.Name);
-                    NavService.ClearBackStack();
-                    await NavService.NavigateTo<MainViewModel>();
-                    await NavService.NavigateTo<ConfigurationsViewModel>();
+                    await NavService.GoBack();
+                    await NavService.GoBack();
+                    
                 }
                 catch
                 {
@@ -119,9 +119,8 @@ namespace Cocktailer.ViewModels.Configurations
                     return;
                 }
 
-                NavService.ClearBackStack();
-                await NavService.NavigateTo<MainViewModel>();
-                await NavService.NavigateTo<ConfigurationsViewModel>();
+                await NavService.GoBack();
+                await NavService.GoBack();
             }
             catch
             {

@@ -94,10 +94,8 @@ namespace Cocktailer.ViewModels.Recipes
             {
                 IsBusy = true;
                 await memService.Save(newEntry, Name);
-                
-                NavService.ClearBackStack();
-                await NavService.NavigateTo<MainViewModel>();
-                await NavService.NavigateTo<RecipesViewModel>();
+
+                await NavService.GoBack();
             }
             catch
             {

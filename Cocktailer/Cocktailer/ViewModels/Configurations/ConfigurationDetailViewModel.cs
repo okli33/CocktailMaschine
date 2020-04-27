@@ -29,21 +29,6 @@ namespace Cocktailer.ViewModels.Configurations
             Entry = entry;
         }
 
-        public Command ViewCommand => new Command(async () => await NavigateToMain());
-        private async Task NavigateToMain()
-        {
-            try
-            {
-                await NavService.NavigateTo<MainViewModel>();
-            }
-            catch (Exception)
-            {
-                await alertService.ShowFailedNavigationMessage();
-                await NavService.NavigateTo<MainViewModel>();
-                NavService.ClearBackStack();
-            }
-        }
-
         public Command EditCommand => new Command(async () => await NavigateToEdit());
             
 
@@ -56,8 +41,7 @@ namespace Cocktailer.ViewModels.Configurations
             catch (Exception)
             {
                 await alertService.ShowFailedNavigationMessage();
-                await NavService.NavigateTo<MainViewModel>();
-                NavService.ClearBackStack();
+                await NavService.GoBack();
             }
         }
     }

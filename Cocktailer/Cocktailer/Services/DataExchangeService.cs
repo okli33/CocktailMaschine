@@ -84,8 +84,8 @@ namespace Cocktailer.Services
                             try
                             {
                                 var file = await subFolder
-                                    .CreateFileAsync(typeof(DrinkEntry).Name
-                                    + "-" + entry.Name, CreationCollisionOption.FailIfExists);
+                                    .CreateFileAsync(entry.Name,
+                                    CreationCollisionOption.FailIfExists);
                                 await file.WriteAllTextAsync(fileText);
                             }
                             catch { }
@@ -101,8 +101,8 @@ namespace Cocktailer.Services
                             try
                             {
                                 var file = await subFolder
-                                    .CreateFileAsync(typeof(RecipeEntry).Name
-                                    + "-" + entry.Name, CreationCollisionOption.FailIfExists);
+                                    .CreateFileAsync(entry.Name, 
+                                    CreationCollisionOption.FailIfExists);
                                 await file.WriteAllTextAsync(fileText);
                             }
                             catch { }
@@ -118,8 +118,8 @@ namespace Cocktailer.Services
                             try
                             {
                                 var file = await subFolder
-                                    .CreateFileAsync(typeof(ConfigurationEntry).Name
-                                    + "-" + entry.Name, CreationCollisionOption.FailIfExists);
+                                    .CreateFileAsync(entry.Name,
+                                    CreationCollisionOption.FailIfExists);
                                 await file.WriteAllTextAsync(fileText);
                             }
                             catch {  }

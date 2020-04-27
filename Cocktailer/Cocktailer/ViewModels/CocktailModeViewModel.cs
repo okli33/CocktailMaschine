@@ -1,13 +1,10 @@
 ﻿using Cocktailer.Exceptions;
 using Cocktailer.Models.Entries;
 using Cocktailer.Services;
-using Microsoft.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO.Pipes;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -60,16 +57,16 @@ namespace Cocktailer.ViewModels
             Config = config;
             try
             {
-                if (!await btService.Init())
-                {
-                    throw new Exception();
-                }
+                    //if (!await btService.Init())
+                    //{
+                    //    throw new Exception();
+                    //}
             }
             catch (Exception)
             {
                 await alertService.ShowErrorMessage("Konnte keine Bluetooth Verbindung aufbauen");
-                await NavService.NavigateTo<MainViewModel>();
-                NavService.ClearBackStack();
+                await NavService.GoBack();
+                return;
             }
 
             RecipeEntries = await CompareConfigurationToRecipes();
@@ -79,7 +76,8 @@ namespace Cocktailer.ViewModels
             }
             else
             {
-                SelectedEntry = RecipeEntries[0];
+                if (SelectedEntry == null)
+                    SelectedEntry = RecipeEntries[0];
             }
             IsBusy = false;
         }
@@ -120,20 +118,29 @@ namespace Cocktailer.ViewModels
                         await alertService.ShowErrorMessage("Es ist ein Fehler"
                             + " mit der Konfiguration aufgetreten."
                             + "\n\n Du wirst zurück ins Haupmenü geleitet.");
-                        await NavService.NavigateTo<MainViewModel>();
-                        NavService.ClearBackStack();
+                        await NavService.GoBack();
                         return new ObservableCollection<RecipeEntry>();
                     }
                 }
                 if (possible)
                     possibleRecipes.Add(recipe);
             }
+            possibleRecipes = possibleRecipes.OrderBy(x => x.Name).ToList();
             return new ObservableCollection<RecipeEntry>(possibleRecipes);
         }
 
         private Command sendRecipeCommand;
         public Command SendRecipeCommand => sendRecipeCommand ?? (sendRecipeCommand =
             new Command(async () => await SendRecipe()));
+
+        public Command FindCocktailCommand => new Command(value => FindCocktail(value.ToString()));
+        private void FindCocktail(string name)
+        {
+            var entry = RecipeEntries.FirstOrDefault(x => x.Name == name);
+            if (entry == null)
+                return;
+            SelectedEntry = entry;
+        }
 
         private async Task SendRecipe()
         {
@@ -170,7 +177,7 @@ namespace Cocktailer.ViewModels
                 catch (SendMessageException)
                 {
                     await alertService.ShowAlertMessage("Fehler beim übertragen der Daten\n\nVorgang wird abgebrochen");
-                    Init();
+                    Init(Config);
                     return;
                 }
                 catch (ReceiveMessageException)

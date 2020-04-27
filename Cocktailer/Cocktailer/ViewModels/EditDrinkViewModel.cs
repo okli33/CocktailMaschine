@@ -72,9 +72,8 @@ namespace Cocktailer.ViewModels
             {
                 IsBusy = false;
             }
-            NavService.ClearBackStack();
-            await NavService.NavigateTo<MainViewModel>();
-            await NavService.NavigateTo<DrinksViewModel>();
+            await NavService.GoBack();
+            await NavService.GoBack();
         }
 
         async Task Delete()
@@ -95,9 +94,8 @@ namespace Cocktailer.ViewModels
                 return;
             }
             IsBusy = false;
-            NavService.ClearBackStack();
-            await NavService.NavigateTo<MainViewModel>();
-            await NavService.NavigateTo<DrinksViewModel>();
+            await NavService.GoBack();
+            await NavService.GoBack();
         }
     }
 }

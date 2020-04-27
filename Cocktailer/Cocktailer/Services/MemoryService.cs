@@ -48,7 +48,9 @@ namespace Cocktailer.Services
         {
             var text = JsonConvert.SerializeObject(obj);
             var folder = await SubFolder<T>();
-            var file = await folder.CreateFileAsync(name + ".json", CreationCollisionOption.ReplaceExisting);
+            name = name.Replace(typeof(T).Name + "-", "");
+            var file = await folder.CreateFileAsync(name + ".json",
+                CreationCollisionOption.ReplaceExisting);
             await file.WriteAllTextAsync(text);
         }
 
@@ -63,6 +65,16 @@ namespace Cocktailer.Services
                 return true;
             }
             catch
+            {
+                
+            }
+            fileName = typeof(T).Name + "-" + fileName;
+            try
+            {
+                await (await folder.GetFileAsync(fileName)).DeleteAsync();
+                return true;
+            }
+            catch (Exception ex)
             {
                 return false;
             }

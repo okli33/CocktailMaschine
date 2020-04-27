@@ -56,6 +56,8 @@ namespace Cocktailer.Droid.Services
                         InputStream = socket.InputStream;
                     }
                 }
+                btAdapter.Enable();
+                return await Init();
             }
             return true;
         }
@@ -67,6 +69,10 @@ namespace Cocktailer.Droid.Services
                 await OutputStream.WriteAsync(Encoding.ASCII.GetBytes(s));
             }
             catch (Java.IO.IOException ex)
+            {
+                throw new SendMessageException(ex.Message);
+            }
+            catch (Exception ex)
             {
                 throw new SendMessageException(ex.Message);
             }

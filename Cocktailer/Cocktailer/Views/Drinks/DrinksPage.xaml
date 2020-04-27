@@ -27,28 +27,28 @@
                                            IconImageSource="trash.png"/>
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                        <Grid Padding="20">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding 
+                            <Grid Padding="20">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding 
                                 Source={RelativeSource AncestorType={x:Type vm:DrinksViewModel}},
                                 Path=ViewCommand}"
                                 CommandParameter="{Binding}" />
-                            </Grid.GestureRecognizers>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" Text="{Binding Percentage, StringFormat='{0}%'}"
-                                   VerticalTextAlignment="Center" FontSize="Large"/>
-                            <Grid Grid.Column="0">
+                                </Grid.GestureRecognizers>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label FontSize="Large" Grid.Column="0" Text="{Binding Brand}" FontAttributes="Bold" />
-                                <Label FontSize="Large" Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding Percentage, StringFormat='{0}%'}"
+                                   VerticalTextAlignment="Center" FontSize="Large"/>
+                                <Grid Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label FontSize="Large" Grid.Column="0" Text="{Binding Brand}" FontAttributes="Bold" />
+                                    <Label FontSize="Large" Grid.Column="1" Text="{Binding Name}" FontAttributes="Bold" />
+                                </Grid>
                             </Grid>
-                        </Grid>
                         </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

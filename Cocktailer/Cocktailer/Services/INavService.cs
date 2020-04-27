@@ -13,9 +13,11 @@ namespace Cocktailer.Services
         Task GoBack();
         Task NavigateTo<TVM>() where TVM : BaseViewModel;
         Task NavigateTo<TVM, TParameter>(TParameter parameter) where TVM : BaseViewModel;
+        Task NavigateToMainMenu();
         void RemoveLastView();
         void ClearBackStack();
         void NavigateToUri(Uri uri);
+
         event PropertyChangedEventHandler CanGoBackChanged;
     }
 }

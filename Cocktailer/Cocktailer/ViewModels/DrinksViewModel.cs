@@ -1,6 +1,7 @@
 ﻿using Cocktailer.Models.Entries;
 using Cocktailer.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -40,14 +41,15 @@ namespace Cocktailer.ViewModels
             DrinkEntries.Clear();
             try
             {
-                DrinkEntries = new ObservableCollection<DrinkEntry>(
-                    await MemService.GetAvailable<DrinkEntry>());
+                var entries = await MemService.GetAvailable<DrinkEntry>();
+                entries = entries.OrderBy(x => x.ToString().Trim().Replace("/","")).ToList();
+                DrinkEntries = new ObservableCollection<DrinkEntry>(entries);
             }
             catch
             {
                 await alertService.ShowErrorMessage("Fehler beim Laden der Daten, versuch's nochmal");
             }
-            finally { IsBusy = false; }            
+            finally { IsBusy = false; }
         }
 
         public Command<DrinkEntry> ViewCommand => new Command<DrinkEntry>(async entry =>

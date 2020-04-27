@@ -52,6 +52,12 @@ namespace Cocktailer.Services
             }
         }
 
+        public async Task NavigateToMainMenu()
+        {
+            ClearBackStack();
+            await NavigateTo<MainViewModel>();
+        }
+
         public void RemoveLastView()
         {
             if (XamarinFormsNav.NavigationStack.Count < 2)

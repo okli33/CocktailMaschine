@@ -10,9 +10,9 @@ namespace Cocktailer.ViewModels.Recipes
 {
     public class EditRecipeViewModel : BaseViewModel<RecipeEntry>
     {
-        public static int GetIndex(Ingredient ing) => 
-            AvailableDrinks.IndexOf(ing.Drink.Brand 
-                + "/" + ing.Drink.Name + "," + ing.Drink.Percentage + "%"); 
+        public static int GetIndex(Ingredient ing) =>
+            AvailableDrinks.IndexOf(ing.Drink.Brand
+                + "/" + ing.Drink.Name + "," + ing.Drink.Percentage + "%");
         private RecipeEntry entry;
         public RecipeEntry Entry
         {
@@ -71,13 +71,13 @@ namespace Cocktailer.ViewModels.Recipes
             var Drinks = await memService.GetAvailable<DrinkEntry>();
             AvailableDrinks = new ObservableCollection<string>(Drinks
                 .Select(x => x.Brand + "/" + x.Name + "," + x.Percentage + "%").ToList());
-            DrinkList.AvailableDrinks = Drinks.ToList() ;
+            DrinkList.AvailableDrinks = Drinks.ToList();
             Entry = entry;
             originalName = entry.Name;
             Name = entry.Name;
             Ingredients = new ObservableCollection<Ingredient>(entry.Ingredients);
             Percentage = entry.Percentage;
-            
+
         }
 
         private Command addIngredientCommand;
@@ -90,7 +90,7 @@ namespace Cocktailer.ViewModels.Recipes
             {
                 Amount = 0,
                 Drink = new DrinkEntry()
-            }) ;
+            });
             Ingredients = ing;
         }
 
@@ -114,9 +114,8 @@ namespace Cocktailer.ViewModels.Recipes
             try
             {
                 await memService.Delete<RecipeEntry>(originalName);
-                NavService.ClearBackStack();
-                await NavService.NavigateTo<MainViewModel>();
-                await NavService.NavigateTo<RecipesViewModel>();
+                await NavService.GoBack();
+                await NavService.GoBack();
             }
             catch
             {
@@ -137,7 +136,6 @@ namespace Cocktailer.ViewModels.Recipes
         private async Task SaveRecipe()
         {
             RefreshPercentage();
-            var oEntry = Entry;
             var vEntry = new RecipeEntry
             {
                 Ingredients = Ingredients.ToList(),
@@ -146,21 +144,15 @@ namespace Cocktailer.ViewModels.Recipes
             };
             try
             {
-                if (originalName == Name)
-                    await memService.Save(vEntry, Name);
-                else
-                {
-                    await memService.Delete<RecipeEntry>(originalName);
-                    await memService.Save(Entry, Name);
-                }
-                NavService.ClearBackStack();
-                await NavService.NavigateTo<MainViewModel>();
-                await NavService.NavigateTo<RecipesViewModel>();
+                await memService.Delete<RecipeEntry>(originalName);
+                await memService.Save(vEntry, Name);
+                await NavService.GoBack();
+                await NavService.GoBack();
             }
             catch
             {
                 await alertService.ShowDataErrorMessage();
-            }            
+            }
         }
     }
 }

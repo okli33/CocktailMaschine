@@ -4,6 +4,7 @@ using Cocktailer.Views.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -44,8 +45,9 @@ namespace Cocktailer.ViewModels.Configurations
             IsBusy = true;
             try
             {
-                ConfigurationEntries = new ObservableCollection<ConfigurationEntry>(
-                    await memoryService.GetAvailable<ConfigurationEntry>());
+                var entries = await memoryService.GetAvailable<ConfigurationEntry>();
+                entries = entries.OrderBy(x => x.Name).ToList();
+                ConfigurationEntries = new ObservableCollection<ConfigurationEntry>(entries);
             }
             catch
             {
@@ -70,8 +72,6 @@ namespace Cocktailer.ViewModels.Configurations
             catch (Exception)
             {
                 await alertService.ShowFailedNavigationMessage();
-                await NavService.NavigateTo<MainViewModel>();
-                NavService.ClearBackStack();
             }
         }
 
