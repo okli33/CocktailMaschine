@@ -25,7 +25,11 @@
                 <Button Grid.Row="2" Text="Konfigurationen" Command="{Binding ConfigurationsCommand}"/>
                 <Button Grid.Row="3" Text="Datenaustausch" Command="{Binding SelectModeCommand}"/>
                 <Label Grid.Row="4" Text="Impressum" HorizontalOptions="Center" VerticalOptions="End"/>
-                <Label  Grid.Row="5" HorizontalTextAlignment="Center" Text="Icons made by DinosoftLabs hwww.flaticon.com/authors/dinosoftlabs from www.flaticon.com" />
+                <Label  Grid.Row="5" HorizontalTextAlignment="Center" Text="Icons made by DinosoftLabs www.flaticon.com/authors/dinosoftlabs
+                                                                            Pixel Perfect www.flaticon.com/authors/pixelperfect
+                                                                            Freepik www.flaticon.com/authors/freepik
+                                                                            Those Icons www.flaticon.com/authors/those-icons 
+                                                                            all from www.flaticon.com" />
             </Grid>
         </StackLayout>
     </ContentPage.Content>
